@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#f6f5f0">
+<title>A-EVO Lab — We train AI researchers</title>
+<meta name="description" content="A-EVO Lab at Amazon studies recursive self-improvement: learned AI researchers that propose, select and run model-development experiments, and self-evolving agents that improve their own harness.">
+<link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="home.css">
+<script src="app.js" defer></script>
+</head>
+<body class="home">
+<a class="skip" href="#main">Skip to content</a>
+<header class="header"><div class="shell header-inner">
+  <a class="brand" href="index.html" aria-label="A-EVO Lab home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 24 16 5l11 19M10 16h12M10 24h12"/></svg><span>A-EVO<span class="brand-lab"> LAB</span></span></a>
+  <button class="menu-toggle" aria-expanded="false" aria-controls="navigation">Menu <span aria-hidden="true">+</span></button>
+  <nav id="navigation" aria-label="Main navigation">
+    <a href="#researchers">AI Researchers</a>
+    <a href="#agents">Self-Evolving Agents</a>
+    <a href="#news">News</a>
+    <a href="publications.html">Publications</a>
+    <a class="nav-external" href="https://github.com/A-EVO-Lab">GitHub <span aria-hidden="true">↗</span></a>
+  </nav>
+</div></header>
+
+<main id="main"><div id="top"></div>
+
+<!-- ============ HERO: thesis + headline results, all above the fold ============ -->
+<section class="h-hero shell" aria-labelledby="hero-title">
+  <div class="h-intro">
+    <div class="h-copy">
+      <p class="kicker"><span class="signal"></span> Focus on Recursive Self-Improvement (RSI) · Amazon</p>
+      <h1 id="hero-title">We train <em>AI researchers.</em></h1>
+      <p class="h-lede">Research skill can be learned. We train models to propose, predict and run the experiments that make AI better, and we study agents that evolve their own harness from experience.</p>
+    </div>
+    <div class="h-side">
+      <div class="h-actions">
+        <a class="button" href="#researchers">See the research <span aria-hidden="true">↓</span></a>
+        <a class="text-link" href="https://index.openrsi.foundation/">Contribute a task to OpenRSI ↗</a>
+      </div>
+      <ul class="h-latest" aria-label="Latest">
+        <li><time>Oct 2026</time><a href="lm2lm/index.html">LM2LM: language models learn to improve language models ↗</a></li>
+        <li><time>Oct 2026</time><a href="rwm/index.html">Language models as AI research world models ↗</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="results" aria-label="Headline results">
+    <!-- LM2LM -->
+    <figure class="rc">
+      <figcaption class="rc-head">
+        <span class="rc-tag">Policy · LM2LM</span>
+        <strong>A trained 27B proposer beats GPT-6-sol</strong>
+        <span class="rc-metric">Avg@4 gain on the held-out Qwen3 family · 10⁻³ BPB · real execution · higher is better</span>
+      </figcaption>
+      <ol class="hbars">
+        <li class="is-ours"><img src="assets/logos/alibaba.svg" alt=""><span class="nm">LM2LM <small>Qwen3.8-27B + RL</small></span><span class="tr"><i style="--w:100%"></i></span><b>53.72</b></li>
+        <li><img src="assets/logos/openai.svg" alt=""><span class="nm">GPT-6-sol <small>+ 300 records</small></span><span class="tr"><i style="--w:40.3%"></i></span><b>21.63</b></li>
+        <li><img src="assets/logos/openai.svg" alt=""><span class="nm">GPT-6-sol</span><span class="tr"><i style="--w:37.6%"></i></span><b>20.19</b></li>
+        <li><img src="assets/logos/alibaba.svg" alt=""><span class="nm">Qwen3.8-27B <small>base</small></span><span class="tr"><i style="--w:6.6%"></i></span><b>3.53</b></li>
+        <li><img src="assets/logos/alibaba.svg" alt=""><span class="nm">Qwen3.8-27B <small>+ records</small></span><span class="tr"><i style="--w:5.5%"></i></span><b>2.97</b></li>
+      </ol>
+      <dl class="rc-facts">
+        <div><dt>vs GPT-6-sol</dt><dd>2.5×<small> avg gain</small></dd></div>
+        <div><dt>Win rate vs base</dt><dd>87.5<small>%</small></dd></div>
+        <div><dt>Data cost</dt><dd>−33<small>%</small></dd></div>
+      </dl>
+      <p class="rc-foot"><span>Qwen3 family held out from proposer training and RWM grounding</span><a href="lm2lm/index.html">LM2LM ↗</a></p>
+    </figure>
+
+    <!-- RWM -->
+    <figure class="rc">
+      <figcaption class="rc-head">
+        <span class="rc-tag">Value · Research World Models</span>
+        <strong>Experience beats scale: 13 of 13 models improve</strong>
+        <span class="rc-metric">Spearman ρ predicting intervention gains · OLMo3-100M</span><span class="rc-legend"><span><i class="k k-off"></i>no records</span><span><i class="k k-on"></i>+ 320 experimental records</span></span>
+      </figcaption>
+      <ol class="dbars" style="--zero:28.57%">
+        <li><img src="assets/logos/anthropic.svg" alt=""><span class="nm">Claude Opus 5</span><span class="tr"><i class="off" style="--l:28.57%;--w:44.36%"></i><i class="on" style="--l:28.57%;--w:63.98%;--c:#CC785C"></i></span><b>0.90</b></li>
+        <li><img src="assets/logos/xai.svg" alt=""><span class="nm">Grok 4.6</span><span class="tr"><i class="off" style="--l:28.57%;--w:41.57%"></i><i class="on" style="--l:28.57%;--w:63.64%;--c:#736CD3"></i></span><b>0.89</b></li>
+        <li><img src="assets/logos/openai.svg" alt=""><span class="nm">GPT-6 Astra</span><span class="tr"><i class="off" style="--l:28.57%;--w:41.07%"></i><i class="on" style="--l:28.57%;--w:62.93%;--c:#1F1F1F"></i></span><b>0.88</b></li>
+        <li><img src="assets/logos/openai.svg" alt=""><span class="nm">GPT-5.6 Sol</span><span class="tr"><i class="off" style="--l:28.57%;--w:32.79%"></i><i class="on" style="--l:28.57%;--w:62.64%;--c:#1F1F1F"></i></span><b>0.88</b></li>
+        <li><img src="assets/logos/openai.svg" alt=""><span class="nm">GPT-5.6 Luna</span><span class="tr"><i class="off" style="--l:28.57%;--w:24.93%"></i><i class="on" style="--l:28.57%;--w:62.36%;--c:#1F1F1F"></i></span><b>0.87</b></li>
+        <li><img src="assets/logos/openai.svg" alt=""><span class="nm">GPT-5.6 Terra</span><span class="tr"><i class="off" style="--l:28.57%;--w:27.07%"></i><i class="on" style="--l:28.57%;--w:61.57%;--c:#1F1F1F"></i></span><b>0.86</b></li>
+        <li><img src="assets/logos/deepseek.svg" alt=""><span class="nm">DeepSeek V3.2</span><span class="tr"><i class="off" style="--l:24.71%;--w:3.86%"></i><i class="on" style="--l:28.57%;--w:61.57%;--c:#2243E6"></i></span><b>0.86</b></li>
+        <li><img src="assets/logos/kimi.jpg" alt=""><span class="nm">Kimi K2.5</span><span class="tr"><i class="off" style="--l:28.57%;--w:6.36%"></i><i class="on" style="--l:28.57%;--w:61.43%;--c:#047AFE"></i></span><b>0.86</b></li>
+        <li><img src="assets/logos/zai.svg" alt=""><span class="nm">GLM-5</span><span class="tr"><i class="off" style="--l:28.57%;--w:3.71%"></i><i class="on" style="--l:28.57%;--w:57.29%;--c:#1C7FF8"></i></span><b>0.80</b></li>
+        <li><img src="assets/logos/nvidia.svg" alt=""><span class="nm">Nemotron 3 Super</span><span class="tr"><i class="off" style="--l:11.93%;--w:16.64%"></i><i class="on" style="--l:28.57%;--w:57.14%;--c:#76B900"></i></span><b>0.80</b></li>
+        <li><img src="assets/logos/minimax.svg" alt=""><span class="nm">MiniMax-M2.5</span><span class="tr"><i class="off" style="--l:28.57%;--w:12.03%"></i><i class="on" style="--l:28.57%;--w:55.79%;--c:#EB3568"></i></span><b>0.78</b></li>
+        <li><img src="assets/logos/alibaba.svg" alt=""><span class="nm">Qwen3 235B</span><span class="tr"><i class="off" style="--l:26.43%;--w:2.14%"></i><i class="on" style="--l:28.57%;--w:54.79%;--c:#FF7018"></i></span><b>0.77</b></li>
+        <li><img src="assets/logos/mistral.svg" alt=""><span class="nm">Mistral Large 3</span><span class="tr"><i class="off" style="--l:2.71%;--w:25.86%"></i><i class="on" style="--l:28.57%;--w:45.57%;--c:#F32E02"></i></span><b>0.64</b></li>
+      </ol>
+      <p class="rc-foot"><span>Best model without records: 0.62 · −78% selection regret on Qwen3 from other environments</span><a href="rwm/index.html">RWM ↗</a></p>
+    </figure>
+
+    <!-- A-Evolve-Training -->
+    <figure class="rc">
+      <figcaption class="rc-head">
+        <span class="rc-tag">Harness · A-Evolve-Training</span>
+        <strong>Autonomous 30B post-training, one point from the top human team</strong>
+        <span class="rc-metric">Nemotron Reasoning Challenge · held-out score · snapshot 1 Jun 2026</span>
+      </figcaption>
+      <ol class="hbars hbars-tall">
+        <li><span class="glyph" aria-hidden="true">●</span><span class="nm">Top human team <small>#1</small></span><span class="tr"><i style="--w:87%"></i></span><b>0.87</b></li>
+        <li class="is-ours"><img src="assets/mark.svg" alt=""><span class="nm">A-Evolve-Training <small>#8 · autonomous</small></span><span class="tr"><i style="--w:86%"></i></span><b>0.86</b></li>
+      </ol>
+      <dl class="rc-facts">
+        <div><dt>Rank</dt><dd>8<small> / ~4,000</small></dd></div>
+        <div><dt>Base</dt><dd>30B<small> Nemotron</small></dd></div>
+        <div><dt>Rounds</dt><dd>4<small> × 8 agents</small></dd></div>
+      </dl>
+      <p class="rc-foot"><span>Data mix, schedule and ablations chosen by the system</span><a href="https://a-evo-lab.github.io/a-evolve-training/">Report ↗</a></p>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ AI RESEARCHERS ============ -->
+<section class="band" id="researchers" aria-labelledby="researchers-title"><div class="shell">
+  <div class="sec-head">
+    <p class="sec-num">01 / AI Researchers <span>Primary program</span></p>
+    <h2 id="researchers-title">Train the researcher, not just the model it improves.</h2>
+    <p class="sec-lede">Agents can propose experiments far faster than anyone can afford to run them. So we treat research as search under a fixed compute budget, and learn each piece of it: the game, a value estimate, a policy, and the harness that runs the campaign.</p>
+  </div>
+
+  <div class="recipe">
+    <article>
+      <p class="role">Game</p>
+      <h3><a href="https://index.openrsi.foundation/">OpenRSI Index</a></h3>
+      <p>Real model-development tasks with fixed verifiers, fixed GPU budgets and a human baseline. The agent can change the method, never the judge.</p>
+      <p class="stat">Up to <b>20,864</b> H100-h per run</p>
+      <p class="links"><a href="https://index.openrsi.foundation/">Index ↗</a><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index">Tasks ↗</a></p>
+    </article>
+    <article>
+      <p class="role">Value</p>
+      <h3><a href="rwm/index.html">Research World Models</a></h3>
+      <p>Predict an experiment's gain before paying for it, using past experimental records in context, and carry that experience across environments.</p>
+      <p class="stat"><b>2,653</b> real records · 9 environments · 171k H100-h</p>
+      <p class="links"><a href="rwm/index.html">Project ↗</a><a href="https://arxiv.org/abs/2610.12235">arXiv:2610.12235 ↗</a></p>
+    </article>
+    <article>
+      <p class="role">Policy</p>
+      <h3><a href="lm2lm/index.html">LM2LM</a></h3>
+      <p>Train the proposer with RL against the world model, and keep that reward honest with periodic real runs.</p>
+      <p class="stat"><b>33%</b> lower data-generation cost than 300-record ICL</p>
+      <p class="links"><a href="lm2lm/index.html">Project ↗</a><a href="https://arxiv.org/abs/2610.23344">arXiv:2610.23344 ↗</a></p>
+    </article>
+    <article>
+      <p class="role">Harness</p>
+      <h3><a href="https://a-evo-lab.github.io/a-evolve-training/">A-Evolve-Training</a></h3>
+      <p>The system around the researcher for multi-week campaigns: an immutable substrate, memory-free workers, and a meta agent that rewrites only the search policy.</p>
+      <p class="stat"><b>0.86</b> vs 0.87 human #1 at 30B</p>
+      <p class="links"><a href="https://a-evo-lab.github.io/a-evolve-training/">Report ↗</a><a href="https://arxiv.org/abs/2606.20657">arXiv:2606.20657 ↗</a></p>
+    </article>
+  </div>
+
+  <ol class="flywheel" aria-label="Research flywheel">
+    <li>Real runs</li><li>Experimental records</li><li>Sharper world model</li><li>Better proposer</li><li>Faster idea search</li>
+  </ol>
+  <p class="flywheel-note">Failed experiments are not wasted budget. They are world-model training data.</p>
+
+  <div class="envs">
+    <div class="envs-head">
+      <h3>Environments</h3>
+      <p>Pre-training, post-training and generation are not separate directions. They are places a researcher works, with a budget attached.</p>
+    </div>
+    <table>
+      <thead><tr><th>Stage</th><th>Task</th><th>What the researcher changes</th><th class="num">Budget per run</th></tr></thead>
+      <tbody>
+        <tr><td>Pre-training</td><td>Marin-Scaling-Ladder</td><td>Optimizer, validated from 550M to 2.5B</td><td class="num">18,432 H100-h</td></tr>
+        <tr><td>Post-training</td><td>Qwen-122B-RL-Merge</td><td>Synthesized RL tasks</td><td class="num">≈20,864 H100-h</td></tr>
+        <tr><td>Generation</td><td>GPIC Leaderboard</td><td>Recipe for one more training pass</td><td class="num">5,815 H100-h</td></tr>
+        <tr><td>LM development</td><td>LM2LM suite</td><td>8 autoregressive and diffusion LM families</td><td class="num">≈10 GPU-h</td></tr>
+      </tbody>
+    </table>
+    <p class="envs-cta">Turn your own research into an environment in about an hour with the RSI-Anything agent. Contributors receive authorship. <a href="https://index.openrsi.foundation/#contribute">Contribute ↗</a></p>
+  </div>
+</div></section>
+
+<!-- ============ SELF-EVOLVING AGENTS ============ -->
+<section class="band band-alt" id="agents" aria-labelledby="agents-title"><div class="shell">
+  <div class="sec-head">
+    <p class="sec-num">02 / Self-Evolving Agents</p>
+    <h2 id="agents-title">Agents that evolve their own harness.</h2>
+    <p class="sec-lede">Keep the model frozen and let the agent improve its prompts, skills, memory and workflow from experience. We ask when that helps, when it hurts, and how to keep it working on open-ended task streams.</p>
+  </div>
+
+  <a class="repo-hero" href="https://github.com/A-EVO-Lab/a-evolve">
+    <span class="repo-id"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>A-EVO-Lab / <strong>a-evolve</strong></span>
+    <span class="repo-desc">Open-source framework for evolving any agent, in any domain, with any evolution algorithm. Adopted or integrated by OpenRLHF, DeepSpeed, SGLang and GEPA.</span>
+    <span class="repo-stats"><span class="stars"><b data-gh-stars="A-EVO-Lab/a-evolve">844</b> stars</span><span><b data-gh-forks="A-EVO-Lab/a-evolve">97</b> forks</span><span class="repo-go">GitHub ↗</span></span>
+  </a>
+
+  <div class="agents-grid">
+    <figure class="rc rc-flat">
+      <figcaption class="rc-head">
+        <span class="rc-tag">A-Evolve · zero manual harness engineering</span>
+        <strong>Evolved harnesses on public agent benchmarks</strong>
+        <span class="rc-metric">Claude Opus 4.6 solver · leaderboard rank at time of reporting</span><span class="rc-legend"><span><i class="k k-off"></i>baseline harness</span><span><i class="k k-acc"></i>evolved harness</span></span>
+      </figcaption>
+      <ol class="dbars dbars-pct">
+        <li><span class="nm">MCP-Atlas <small class="rank">#1</small></span><span class="tr"><i class="off" style="--l:0%;--w:76.0%"></i><i class="on" style="--l:0%;--w:79.4%"></i></span><b>79.4<small>+3.4</small></b></li>
+        <li><span class="nm">SWE-bench Verified <small class="rank">#5</small></span><span class="tr"><i class="off" style="--l:0%;--w:74.2%"></i><i class="on" style="--l:0%;--w:76.8%"></i></span><b>76.8<small>+2.6</small></b></li>
+        <li><span class="nm">Terminal-Bench 2.0 <small class="rank">#7</small></span><span class="tr"><i class="off" style="--l:0%;--w:63.5%"></i><i class="on" style="--l:0%;--w:76.5%"></i></span><b>76.5<small>+13.0</small></b></li>
+        <li><span class="nm">OSWorld</span><span class="tr"><i class="off" style="--l:0%;--w:65.7%"></i><i class="on" style="--l:0%;--w:69.6%"></i></span><b>69.6<small>+3.9</small></b></li>
+        <li><span class="nm">SkillsBench <small class="rank">#2</small></span><span class="tr"><i class="off" style="--l:0%;--w:19.7%"></i><i class="on" style="--l:0%;--w:34.9%"></i></span><b>34.9<small>+15.2</small></b></li>
+      </ol>
+      <p class="rc-foot"><span>Accuracy / pass rate, %. Baseline is the same model without the evolved harness.</span><a href="https://github.com/A-EVO-Lab/a-evolve">Code ↗</a></p>
+    </figure>
+
+    <ul class="paper-list">
+      <li><span class="venue">EMNLP 2026</span><a href="https://arxiv.org/abs/2605.30621"><strong>Harness Updating Is Not Harness Benefit</strong></a><p>Writing harness updates and benefiting from them are separate skills. Across seven evolvers, best and worst differ by at most 3.1pp; mid-tier agents gain most.</p></li>
+      <li><span class="venue">EMNLP 2026</span><a href="https://arxiv.org/abs/2608.15071"><strong>Evo-Harness</strong></a><p>Compile one-shot execution context into reusable skills. Wins every baseline on CL-Bench, τ-bench and WebArena-Infinity.</p></li>
+      <li><span class="venue">2026</span><a href="https://arxiv.org/abs/2606.01770"><strong>Adaptive Auto-Harness</strong></a><p>A harness tree with solve-time routing for long-running streams. 80.9% vs 50.8% next best on PolyBench prediction markets. <a class="inline-code" href="https://github.com/A-EVO-Lab/AdaptiveHarness">Code ↗</a></p></li>
+      <li><span class="venue">EMNLP 2026</span><a href="https://arxiv.org/abs/2603.18718"><strong>MemMA</strong></a><p>Coordinate memory construction and retrieval, with verification and repair before memories are kept.</p></li>
+      <li><span class="venue">Position</span><a href="https://arxiv.org/abs/2602.00359"><strong>Agentic Evolution Is the Path to Evolving LLMs</strong></a><p>The case for improving the system around the model as its own axis of progress.</p></li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- ============ NEWS ============ -->
+<section class="band" id="news" aria-labelledby="news-title"><div class="shell news-wrap">
+  <div>
+    <p class="sec-num">03 / News</p>
+    <h2 id="news-title" class="h2-sm">Recent.</h2>
+  </div>
+  <ul class="news">
+      <li><time>Nov 2026</time><span>Talk at UIUC: “Autoresearch Is Idea Search”</span></li>
+      <li><time>Oct 2026</time><a href="lm2lm/index.html">LM2LM: a learned proposer beats GPT-6-sol on unseen models</a></li>
+      <li><time>Oct 2026</time><a href="rwm/index.html">Research World Models: predict gains before execution</a></li>
+      <li><time>Aug 2026</time><a href="https://arxiv.org/abs/2608.15071">Evo-Harness, EMNLP 2026</a></li>
+      <li><time>Jun 2026</time><a href="https://a-evo-lab.github.io/a-evolve-training/">A-Evolve-Training: autonomous 30B post-training</a></li>
+      <li><time>Jun 2026</time><a href="https://arxiv.org/abs/2606.01770">Adaptive Auto-Harness</a></li>
+      <li><time>May 2026</time><a href="https://arxiv.org/abs/2605.30621">Harness Updating Is Not Harness Benefit, EMNLP 2026</a></li>
+      <li><time>Mar 2026</time><a href="https://github.com/A-EVO-Lab/a-evolve">A-Evolve open-sourced</a></li>
+    </ul>
+</div></section>
+</main>
+
+<footer class="shell footer">
+  <a class="brand" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 24 16 5l11 19M10 16h12M10 24h12"/></svg><span>A-EVO<span class="brand-lab"> LAB</span></span></a>
+  <p>Recursive Self-Improvement (RSI)<br><span>A research lab at Amazon</span></p>
+  <div><a href="publications.html">Publications</a><a href="https://github.com/A-EVO-Lab">GitHub ↗</a><a href="#top">Back to top ↑</a></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">LM2LM: a learning loop grounded by real experiments</title>
+  <desc id="desc">A Qwen3.8 27B proposer generates model-improvement proposals. A frozen GPT-6 Sol research world model uses real experimental records in context to predict gains and supply reinforcement-learning rewards. RL updates the proposer's weights. Periodically, high-rated current-policy proposals are built by GPT-6 Astra and executed in real training runs. Their measured outcomes refresh the research world model's context, while its weights remain frozen.</desc>
+  <defs>
+    <marker id="indigo-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M2 2 10 6 2 10" fill="none" stroke="#5863d8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="green-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M2 2 10 6 2 10" fill="none" stroke="#16866d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <style>
+      text{font-family:Arial,Helvetica,sans-serif;fill:#17211e}
+      .muted{fill:#68766e}.indigo{fill:#5863d8}.green{fill:#16866d}
+      .label{font-size:18px;font-weight:700;letter-spacing:2px}
+      .heading{font-size:31px;font-weight:600;letter-spacing:-.65px}
+      .body{font-size:23px}.small{font-size:20px}
+      .line{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.6}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="#f7f8f5"/>
+  <text x="80" y="76" font-size="43" font-weight="600" letter-spacing="-1.5">LM2LM training loop</text>
+  <text x="80" y="112" font-size="22" class="muted">Two feedback loops turn experimental experience into a better proposer.</text>
+
+  <!-- Predicted rewards update the proposer, never the frozen RWM weights. -->
+  <path d="M1385 230 V184 Q1385 166 1367 166 H396 Q378 166 378 184 V227" class="line" stroke="#5863d8" marker-end="url(#indigo-arrow)"/>
+  <rect x="606" y="146" width="400" height="39" rx="19" fill="#f7f8f5"/>
+  <text x="806" y="172" text-anchor="middle" class="body indigo">RL update · learn better proposals</text>
+  <text x="80" y="208" class="label indigo">01 / SCALABLE FEEDBACK</text>
+
+  <!-- Main learning path. -->
+  <rect x="80" y="230" width="320" height="200" rx="16" fill="#fff" stroke="#d8daf0" stroke-width="1.5"/>
+  <text x="108" y="266" class="label indigo">TRAINABLE POLICY</text>
+  <text x="108" y="311" class="heading">LLM proposer</text>
+  <text x="108" y="347" class="body muted">Qwen3.8 27B</text>
+  <rect x="108" y="374" width="226" height="32" rx="16" fill="#eef0fc"/>
+  <circle cx="127" cy="390" r="4" fill="#5863d8"/>
+  <text x="141" y="396" class="small indigo">Weights are updated</text>
+
+  <path d="M418 319 H626" class="line" stroke="#5863d8" marker-end="url(#indigo-arrow)"/>
+  <g fill="#fff" stroke="#c5c9e8" stroke-width="1.4">
+    <rect x="473" y="250" width="46" height="51" rx="5" transform="rotate(-8 496 275)"/>
+    <rect x="505" y="247" width="46" height="51" rx="5"/>
+    <rect x="537" y="250" width="46" height="51" rx="5" transform="rotate(8 560 275)"/>
+  </g>
+  <path d="M515 262h25m-25 10h25m-25 10h17" fill="none" stroke="#8d96d1" stroke-width="2" stroke-linecap="round"/>
+  <text x="523" y="357" text-anchor="middle" class="body muted">Current proposals</text>
+  <text x="523" y="385" text-anchor="middle" class="small muted">Changes to model recipes</text>
+
+  <rect x="650" y="230" width="430" height="200" rx="16" fill="#fff" stroke="#d8daf0" stroke-width="1.5"/>
+  <text x="678" y="266" class="label indigo">FROZEN PREDICTOR</text>
+  <text x="678" y="311" class="heading">Research world model</text>
+  <text x="678" y="347" class="body muted">GPT-6 Sol · weights stay frozen</text>
+  <rect x="678" y="373" width="385" height="33" rx="16" fill="#edf5f0"/>
+  <g fill="none" stroke="#16866d" stroke-width="1.4"><rect x="692" y="382" width="14" height="15" rx="2"/><path d="M696 379h12q2 0 2 2v14M695 387h8m-8 5h6"/></g>
+  <text x="721" y="396" class="small green">Real experimental records in context</text>
+
+  <path d="M1100 319 H1227" class="line" stroke="#5863d8" marker-end="url(#indigo-arrow)"/>
+  <text x="1164" y="357" text-anchor="middle" class="small muted">Predict gains</text>
+
+  <rect x="1250" y="230" width="270" height="200" rx="16" fill="#eef0fc" stroke="#d8daf0" stroke-width="1.5"/>
+  <text x="1278" y="266" class="label indigo">RL FEEDBACK</text>
+  <text x="1278" y="311" class="heading" style="font-size:26px">Predicted rewards</text>
+  <text x="1278" y="350" class="small muted">Normalized, clipped gains</text>
+  <text x="1278" y="379" class="small muted">Validity, novelty, diversity</text>
+
+  <!-- A separate, periodic execution loop refreshes in-context records. -->
+  <rect x="64" y="546" width="1472" height="264" rx="22" fill="#edf4ee"/>
+  <path d="M780 432 V472 Q780 490 762 490 H458 Q440 490 440 508 V605" class="line" stroke="#16866d" marker-end="url(#green-arrow)"/>
+  <text x="548" y="478" text-anchor="middle" class="body green">RWM ratings guide selection</text>
+  <path d="M1320 607 V508 Q1320 490 1302 490 H988 Q970 490 970 472 V433" class="line" stroke="#16866d" marker-end="url(#green-arrow)"/>
+  <text x="1144" y="478" text-anchor="middle" class="body green">Refresh context</text>
+
+  <text x="80" y="580" class="label green">02 / ON-POLICY CALIBRATION</text>
+  <text x="600" y="580" class="small muted">Targeted real execution, between RL segments</text>
+  <rect x="80" y="610" width="400" height="180" rx="14" fill="#fff" stroke="#dce2da" stroke-width="1.5"/>
+  <text x="108" y="654" class="heading">Choose top-rated</text>
+  <text x="108" y="690" class="heading">current proposals</text>
+  <text x="108" y="738" class="body muted">Target the feedback RL relies on.</text>
+  <path d="M498 700 H577" class="line" stroke="#16866d" marker-end="url(#green-arrow)"/>
+
+  <rect x="600" y="610" width="400" height="180" rx="14" fill="#fff" stroke="#dce2da" stroke-width="1.5"/>
+  <text x="628" y="654" class="heading">Build &amp; execute</text>
+  <text x="628" y="700" class="body muted">GPT-6 Astra builds the changes.</text>
+  <text x="628" y="738" class="body muted">Real training runs measure gains.</text>
+  <path d="M1018 700 H1097" class="line" stroke="#16866d" marker-end="url(#green-arrow)"/>
+
+  <rect x="1120" y="610" width="400" height="180" rx="14" fill="#fff" stroke="#dce2da" stroke-width="1.5"/>
+  <text x="1148" y="654" class="heading">Record real outcomes</text>
+  <text x="1148" y="700" class="body muted">Task · proposal · measured gain</text>
+  <rect x="1148" y="722" width="352" height="33" rx="16" fill="#edf5f0"/>
+  <circle cx="1167" cy="738" r="4" fill="#16866d"/>
+  <text x="1181" y="745" class="small green">Update records, not RWM weights</text>
+
+  <circle cx="88" cy="855" r="5" fill="#5863d8"/><text x="105" y="862" class="small muted">The proposer learns.</text>
+  <circle cx="345" cy="855" r="5" fill="#16866d"/><text x="362" y="862" class="small muted">The evidence grows.</text>
+  <text x="1520" y="862" text-anchor="end" class="small muted">Only measured outcomes enter the RWM’s experimental records.</text>
+</svg>

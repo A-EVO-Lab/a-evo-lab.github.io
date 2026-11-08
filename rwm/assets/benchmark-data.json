@@ -1,0 +1,159 @@
+{
+  "models": [
+    {
+      "id": "m0",
+      "name": "Claude Opus 5 (high)",
+      "provider": "Anthropic",
+      "color": "#CC785C",
+      "before": 0.6210604709915126,
+      "after": 0.8956726734441848,
+      "logo": "assets/model-logos/anthropic.svg"
+    },
+    {
+      "id": "m1",
+      "name": "Grok 4.6 (high)",
+      "provider": "xAI",
+      "color": "#736CD3",
+      "before": 0.5817587217671679,
+      "after": 0.8906746770585875,
+      "logo": "assets/model-logos/xai.svg"
+    },
+    {
+      "id": "m2",
+      "name": "GPT-6 Astra (high)",
+      "provider": "OpenAI",
+      "color": "#1F1F1F",
+      "before": 0.5750502479341251,
+      "after": 0.8805690502154662,
+      "logo": "assets/model-logos/openai.svg"
+    },
+    {
+      "id": "m3",
+      "name": "GPT-5.6 Sol (high)",
+      "provider": "OpenAI",
+      "color": "#1F1F1F",
+      "before": 0.45931067976335743,
+      "after": 0.8771229489361815,
+      "logo": "assets/model-logos/openai.svg"
+    },
+    {
+      "id": "m4",
+      "name": "GPT-5.6 Terra (high)",
+      "provider": "OpenAI",
+      "color": "#1F1F1F",
+      "before": 0.3786913833449128,
+      "after": 0.8616368669762594,
+      "logo": "assets/model-logos/openai.svg"
+    },
+    {
+      "id": "m5",
+      "name": "GPT-5.6 Luna (high)",
+      "provider": "OpenAI",
+      "color": "#1F1F1F",
+      "before": 0.3488996168821823,
+      "after": 0.8733657264304917,
+      "logo": "assets/model-logos/openai.svg"
+    },
+    {
+      "id": "m6",
+      "name": "MiniMax-M2.5",
+      "provider": "MiniMax",
+      "color": "#EB3568",
+      "before": 0.16844029210192132,
+      "after": 0.7808273762995732,
+      "logo": "assets/model-logos/minimax.svg"
+    },
+    {
+      "id": "m7",
+      "name": "Kimi K2.5",
+      "provider": "Moonshot",
+      "color": "#047AFE",
+      "before": 0.0893298488149468,
+      "after": 0.8596151081556477,
+      "logo": "assets/model-logos/kimi.jpg"
+    },
+    {
+      "id": "m8",
+      "name": "GLM-5",
+      "provider": "Z.ai",
+      "color": "#1C7FF8",
+      "before": 0.05191218689557857,
+      "after": 0.8020923994083032,
+      "logo": "assets/model-logos/zai.svg"
+    },
+    {
+      "id": "m9",
+      "name": "Qwen3 235B 2507",
+      "provider": "Alibaba",
+      "color": "#FF7018",
+      "before": -0.030246655888524755,
+      "after": 0.766647178883721,
+      "logo": "assets/model-logos/alibaba.svg"
+    },
+    {
+      "id": "m10",
+      "name": "DeepSeek V3.2",
+      "provider": "DeepSeek",
+      "color": "#2243E6",
+      "before": -0.05420376313519638,
+      "after": 0.8619109126822841,
+      "logo": "assets/model-logos/deepseek.svg"
+    },
+    {
+      "id": "m11",
+      "name": "Nemotron 3 Super",
+      "provider": "NVIDIA",
+      "color": "#76B900",
+      "before": -0.23293819782826322,
+      "after": 0.8003240774388909,
+      "logo": "assets/model-logos/nvidia.svg"
+    },
+    {
+      "id": "m12",
+      "name": "Mistral Large 3",
+      "provider": "Mistral",
+      "color": "#F32E02",
+      "before": -0.3620032386340157,
+      "after": 0.6383063753018331,
+      "logo": "assets/model-logos/mistral.svg"
+    }
+  ],
+  "source": {
+    "title": "Language Models as AI Research World Models",
+    "url": "https://arxiv.org/abs/2610.12235",
+    "version": "v2",
+    "figure": 3,
+    "metric": "Spearman \u03c1",
+    "environment": "OLMo3-100M",
+    "queries": 160,
+    "records": 320,
+    "note": "Endpoint measurements; animation interpolates between conditions. Rank uses unrounded values."
+  },
+  "efforts": [
+    {
+      "label": "LOW",
+      "w0": 0.6091314182884019,
+      "knowledge": 0.8921454567041198
+    },
+    {
+      "label": "MEDIUM",
+      "w0": 0.5853497575964278,
+      "knowledge": 0.898057706318918
+    },
+    {
+      "label": "HIGH",
+      "w0": 0.6210604709915126,
+      "knowledge": 0.8956726734441848
+    },
+    {
+      "label": "XHIGH",
+      "w0": 0.6540134816755361,
+      "knowledge": 0.908717193038081
+    },
+    {
+      "label": "MAX",
+      "w0": 0.6476407140543134,
+      "knowledge": 0.9041222549924585
+    }
+  ]
+}

@@ -1,0 +1,1023 @@
+{
+  "paper": {
+    "title": "Language Models Learn to Improve Language Models",
+    "method": "LM2LM",
+    "arxiv": "2610.23344",
+    "version": "v2",
+    "revisionDate": "2026-11-02",
+    "url": "https://arxiv.org/abs/2610.23344",
+    "pdf": "https://arxiv.org/pdf/2610.23344v2",
+    "authorsSource": {
+      "label": "Title page",
+      "url": "https://arxiv.org/pdf/2610.23344v2#page=1",
+      "page": 1,
+      "tex": "amazonpaper.tex / author and affiliation declarations"
+    }
+  },
+  "roles": {
+    "proposer": {
+      "model": "Qwen3.8-27B",
+      "weightsUpdated": true,
+      "method": "DAPO reinforcement learning"
+    },
+    "rwm": {
+      "model": "GPT-6-sol",
+      "weightsUpdated": false,
+      "reasoning": "high",
+      "recordsUpdated": true,
+      "description": "Predicts experimental gain using real records supplied in context."
+    },
+    "builder": {
+      "model": "GPT-6-astra",
+      "reasoning": "high",
+      "description": "Implements proposals for real-execution evaluation and calibration."
+    },
+    "source": {
+      "label": "Section 4.1; Appendix E",
+      "url": "https://arxiv.org/pdf/2610.23344v2#page=7",
+      "page": 7,
+      "tex": "5_experiments_v2.tex / Implementation Details; 7_appendix_v2.tex / sec:exp-impl-details"
+    }
+  },
+  "protocol": {
+    "trainingTasks": 40,
+    "heldoutTasks": 10,
+    "heldoutStates": 78,
+    "arStates": 60,
+    "diffusionStates": 18,
+    "familiesInTraining": 8,
+    "familiesInHeldoutEvaluation": 7,
+    "proposalsPerState": 4,
+    "defaultRlSteps": 96,
+    "initialRealRecords": 100,
+    "calibrationSteps": [
+      16,
+      40,
+      64
+    ],
+    "calibrationRecordsAdded": [
+      31,
+      38,
+      31
+    ],
+    "defaultTotalRealRuns": 200,
+    "baselineIclRecords": 300,
+    "sftPairs": 300,
+    "rftPositivePairs": 114,
+    "definitionOfTask": "Model family, model size, training budget, and reference recipe. Each real experiment trains the target model from scratch.",
+    "definitions": {
+      "gain": "Reference validation loss minus proposal validation loss; positive is better.",
+      "avg4": "Mean of four real proposal gains per state, then equal-weight average over states.",
+      "best4": "Maximum of four real proposal gains per state, then equal-weight average over states.",
+      "negativePct": "Percentage of proposals with negative real gain.",
+      "winRate": "Percentage of states with higher Avg@4; ties count as 0.5.",
+      "invalidOrUnchanged": "Assigned zero gain; negative gains are retained."
+    },
+    "isolation": "No held-out experimental records are used for proposer training, RWM grounding, or calibration.",
+    "calibrationRecordUse": "Calibration outcomes enter the RWM context only; they do not enter training-state histories.",
+    "source": {
+      "label": "Section 4.1; Appendices C-E",
+      "url": "https://arxiv.org/pdf/2610.23344v2#page=7",
+      "page": 7,
+      "tex": "5_experiments_v2.tex / ssec:exp-env; 7_appendix_v2.tex / app:data-construction, app:metrics, app:impl-cal"
+    }
+  },
+  "main": {
+    "source": {
+      "label": "Table 1",
+      "url": "https://arxiv.org/pdf/2610.23344v2#page=6",
+      "page": 6,
+      "tex": "5_experiments_v2.tex / tab:main"
+    },
+    "ar": {
+      "unit": "10^-3 BPB",
+      "unitHtml": "10<sup>-3</sup> BPB",
+      "states": 60,
+      "rows": [
+        {
+          "id": "base",
+          "label": "Base",
+          "avg4": -7.94,
+          "best4": 11.39,
+          "negativePct": 70.4,
+          "winVsBasePct": null,
+          "lm2lmWinVsRowPct": 93.3
+        },
+        {
+          "id": "base_icl",
+          "label": "Base-ICL",
+          "avg4": 4.04,
+          "best4": 16.54,
+          "negativePct": 40.8,
+          "winVsBasePct": 81.7,
+          "lm2lmWinVsRowPct": 66.7
+        },
+        {
+          "id": "gpt6_sol",
+          "label": "GPT-6-sol",
+          "avg4": 6.51,
+          "best4": 8.79,
+          "negativePct": 52.5,
+          "winVsBasePct": 83.3,
+          "lm2lmWinVsRowPct": 56.7
+        },
+        {
+          "id": "gpt6_sol_icl",
+          "label": "GPT-6-sol-ICL",
+          "avg4": 6.15,
+          "best4": 11.27,
+          "negativePct": 29.6,
+          "winVsBasePct": 78.3,
+          "lm2lmWinVsRowPct": 51.7
+        },
+        {
+          "id": "sft",
+          "label": "SFT",
+          "avg4": -12.19,
+          "best4": 5.51,
+          "negativePct": 71.5,
+          "winVsBasePct": 55.0,
+          "lm2lmWinVsRowPct": 93.3
+        },
+        {
+          "id": "rft_real",
+          "label": "RFT-Real",
+          "avg4": -22.95,
+          "best4": 9.69,
+          "negativePct": 66.5,
+          "winVsBasePct": 45.0,
+          "lm2lmWinVsRowPct": 95.0
+        },
+        {
+          "id": "lm2lm",
+          "label": "LM2LM",
+          "avg4": 17.06,
+          "best4": 23.4,
+          "negativePct": 39.2,
+          "winVsBasePct": 93.3,
+          "lm2lmWinVsRowPct": null
+        }
+      ]
+    },
+    "diffusion": {
+      "unit": "10^-2 nats per token",
+      "unitHtml": "10<sup>-2</sup> nats / token",
+      "states": 18,
+      "rows": [
+        {
+          "id": "base",
+          "label": "Base",
+          "avg4": -4.18,
+          "best4": 5.89,
+          "negativePct": 59.7,
+          "winVsBasePct": null,
+          "lm2lmWinVsRowPct": 100
+        },
+        {
+          "id": "base_icl",
+          "label": "Base-ICL",
+          "avg4": 4.03,
+          "best4": 8.5,
+          "negativePct": 13.9,
+          "winVsBasePct": 83.3,
+          "lm2lmWinVsRowPct": 72.2
+        },
+        {
+          "id": "gpt6_sol",
+          "label": "GPT-6-sol",
+          "avg4": 1.98,
+          "best4": 4.43,
+          "negativePct": 38.9,
+          "winVsBasePct": 83.3,
+          "lm2lmWinVsRowPct": 83.3
+        },
+        {
+          "id": "gpt6_sol_icl",
+          "label": "GPT-6-sol-ICL",
+          "avg4": 4.94,
+          "best4": 5.93,
+          "negativePct": 0,
+          "winVsBasePct": 94.4,
+          "lm2lmWinVsRowPct": 72.2
+        },
+        {
+          "id": "sft",
+          "label": "SFT",
+          "avg4": -3.09,
+          "best4": 3.73,
+          "negativePct": 54.2,
+          "winVsBasePct": 61.1,
+          "lm2lmWinVsRowPct": 100
+        },
+        {
+          "id": "rft_real",
+          "label": "RFT-Real",
+          "avg4": -3.72,
+          "best4": 3.37,
+          "negativePct": 52.8,
+          "winVsBasePct": 50,
+          "lm2lmWinVsRowPct": 88.9
+        },
+        {
+          "id": "lm2lm",
+          "label": "LM2LM",
+          "avg4": 7.1,
+          "best4": 9.93,
+          "negativePct": 7.6,
+          "winVsBasePct": 100,
+          "lm2lmWinVsRowPct": null
+        }
+      ]
+    },
+    "baseModel": "Qwen3.8-27B",
+    "iclRecords": 300,
+    "metricsAreRealExecution": true,
+    "aggregateCaution": "Highest aggregate Avg@4 and Best@4 in both domains; not a win in every family or the lowest negative-gain rate."
+  },
+  "transfer": {
+    "source": {
+      "label": "Table 2; Section 4.3",
+      "url": "https://arxiv.org/pdf/2610.23344v2#page=8",
+      "page": 8,
+      "tex": "5_experiments_v2.tex / tab:rq3-transfer-l2, ssec:RQ3"
+    },
+    "excludedFamily": "Qwen3",
+    "unit": "10^-3 BPB",
+    "rows": [
+      {
+        "id": "base",
+        "label": "Base",
+        "avg4": 3.53,
+        "best4": 31.39,
+        "winVsBasePct": null,
+        "lm2lmWinVsRowPct": 87.5
+      },
+      {
+        "id": "base_icl",
+        "label": "Base-ICL",
+        "avg4": 2.97,
+        "best4": 25.22,
+        "winVsBasePct": 58.3,
+        "lm2lmWinVsRowPct": 100
+      },
+      {
+        "id": "gpt6_sol",
+        "label": "GPT-6-sol",
+        "avg4": 20.19,
+        "best4": 22.75,
+        "winVsBasePct": 66.7,
+        "lm2lmWinVsRowPct": 62.5
+      },
+      {
+        "id": "gpt6_sol_icl",
+        "label": "GPT-6-sol-ICL",
+        "avg4": 21.63,
+        "best4": 25.27,
+        "winVsBasePct": 75,
+        "lm2lmWinVsRowPct": 62.5
+      },
+      {
+        "id": "lm2lm",
+        "label": "LM2LM",
+        "avg4": 53.72,
+        "best4": 86.69,
+        "winVsBasePct": 87.5,
+        "lm2lmWinVsRowPct": null
+      }
+    ],
+    "excludedFrom": [
+      "proposer training tasks",
+      "RWM grounding records"
+    ],
+    "description": "A separate experiment holds out the entire Qwen3 target family, trains on the remaining families, and evaluates real proposal gains on Qwen3.",
+    "avgGainRatioVsGptIcl": 2.483587609801202,
+    "ratioIsDerived": true,
+    "importantDistinction": "Qwen3 is the target model family being improved. The proposing agent is Qwen3.8-27B. The family exclusion concerns this study's experimental records and training tasks, not the base agent's pretraining knowledge."
+  },
+  "costs": {
+    "source": {
+      "label": "Section 4.2; Tables 10 and 11",
+      "url": "https://arxiv.org/pdf/2610.23344v2#page=24",
+      "page": 24,
+      "tex": "5_experiments_v2.tex / Cost Efficiency; 7_appendix_v2.tex / tab:total-cost, tab:rq1-cost"
+    },
+    "comparison": {
+      "lm2lm": {
+        "checkpoint": "Step 96 / M3",
+        "realRuns": 200,
+        "dataGenerationUsd": 40050,
+        "dataGenerationUsdRounded": 40100,
+        "dataGenerationHours": 343.2,
+        "proposerTrainingUsdRounded": 16100,
+        "totalUsdRounded": 56100
+      },
+      "icl300": {
+        "realRuns": 300,
+        "dataGenerationUsd": 60001,
+        "dataGenerationUsdRounded": 60000,
+        "dataGenerationHours": 510,
+        "proposerTrainingUsdRounded": 0,
+        "totalUsdRounded": 60000
+      },
+      "dataGenerationReductionPct": 33.25111248145865,
+      "headlineDataGenerationReductionPct": 33,
+      "totalReductionPctFromRoundedCosts": 6.5,
+      "dataGenerationTimeReductionPct": 32.705882352941174
+    },
+    "definition": "Data generation includes GPU cost of real experimental runs (including failed runs) plus RWM prediction token costs.",
+    "excludedFromDataGeneration": [
+      "proposer inference",
+      "builder inference",
+      "proposer fine-tuning",
+      "shared research-state construction"
+    ],
+    "totalDefinition": "The paper's total adds proposer-training GPU cost to data-generation cost; it is not an all-inclusive project or deployment bill.",
+    "priceBasis": {
+      "gpuModel": "NVIDIA B200",
+      "usdPerGpuHour": 14.208,
+      "note": "Paper accounting prices, not a current price quote. Table 10 uses B200-equivalent hours with H200 converted at 1.198."
+    },
+    "timeDefinition": "Sum of real-execution durations assuming sequential execution, plus RWM prediction time; not observed end-to-end elapsed time.",
+    "arCheckpoints": [
+      {
+        "recordSet": "M0",
+        "rlStep": 16,
+        "realRuns": 100,
+        "gpuHours": 1665,
+        "rwmTokensMillions": 140.6,
+        "dataGenerationUsd": 23901,
+        "realExecutionHours": 202.0,
+        "rwmHours": 1.4,
+        "avg4": 1.81,
+        "best4": 18.91
+      },
+      {
+        "recordSet": "M1",
+        "rlStep": 40,
+        "realRuns": 131,
+        "gpuHours": 1960,
+        "rwmTokensMillions": 294.1,
+        "dataGenerationUsd": 28330,
+        "realExecutionHours": 239.0,
+        "rwmHours": 2.5,
+        "avg4": 10.85,
+        "best4": 21.28
+      },
+      {
+        "recordSet": "M2",
+        "rlStep": 64,
+        "realRuns": 169,
+        "gpuHours": 2500,
+        "rwmTokensMillions": 459.4,
+        "dataGenerationUsd": 36183,
+        "realExecutionHours": 306.6,
+        "rwmHours": 3.4,
+        "avg4": 18.01,
+        "best4": 23.91
+      },
+      {
+        "recordSet": "M3",
+        "rlStep": 96,
+        "realRuns": 200,
+        "gpuHours": 2758,
+        "rwmTokensMillions": 664.7,
+        "dataGenerationUsd": 40050,
+        "realExecutionHours": 338.9,
+        "rwmHours": 4.3,
+        "avg4": 17.06,
+        "best4": 23.4
+      },
+      {
+        "recordSet": "M4",
+        "rlStep": 128,
+        "realRuns": 236,
+        "gpuHours": 3206,
+        "rwmTokensMillions": 889.3,
+        "dataGenerationUsd": 46626,
+        "realExecutionHours": 395.0,
+        "rwmHours": 5.3,
+        "avg4": 19.4,
+        "best4": 24.69
+      }
+    ],
+    "arCheckpointsSource": {
+      "label": "Table 11",
+      "url": "https://arxiv.org/pdf/2610.23344v2#page=24",
+      "page": 24,
+      "tex": "7_appendix_v2.tex / tab:rq1-cost"
+    },
+    "totalCheckpoints": [
+      {
+        "recordSet": "M0",
+        "dataGenerationUsdThousands": 23.9,
+        "proposerTrainingGpuHours": 152,
+        "proposerTrainingUsdThousands": 2.2,
+        "totalUsdThousands": 26.1
+      },
+      {
+        "recordSet": "M1",
+        "dataGenerationUsdThousands": 28.3,
+        "proposerTrainingGpuHours": 434,
+        "proposerTrainingUsdThousands": 6.2,
+        "totalUsdThousands": 34.5
+      },
+      {
+        "recordSet": "M2",
+        "dataGenerationUsdThousands": 36.2,
+        "proposerTrainingGpuHours": 898,
+        "proposerTrainingUsdThousands": 12.8,
+        "totalUsdThousands": 48.9
+      },
+      {
+        "recordSet": "M3",
+        "dataGenerationUsdThousands": 40.1,
+        "proposerTrainingGpuHours": 1131,
+        "proposerTrainingUsdThousands": 16.1,
+        "totalUsdThousands": 56.1
+      },
+      {
+        "recordSet": "M4",
+        "dataGenerationUsdThousands": 46.6,
+        "proposerTrainingGpuHours": 1376,
+        "proposerTrainingUsdThousands": 19.6,
+        "totalUsdThousands": 66.2
+      }
+    ],
+    "totalSource": {
+      "label": "Table 10",
+      "url": "https://arxiv.org/pdf/2610.23344v2#page=23",
+      "page": 23,
+      "tex": "7_appendix_v2.tex / tab:total-cost"
+    },
+    "roundingNote": "Individual displayed costs are rounded independently; 40.1 + 16.1 need not equal displayed total 56.1."
+  },
+  "calibration": {
+    "source": {
+      "label": "Section 4.4; Figure 4",
+      "url": "https://arxiv.org/pdf/2610.23344v2#page=8",
+      "page": 8,
+      "tex": "5_experiments_v2.tex / ssec:ablation"
+    },
+    "ablation": {
+      "domain": "ar",
+      "unit": "10^-3 BPB",
+      "rlStep": 96,
+      "realRuns": 200,
+      "rows": [
+        {
+          "id": "static200",
+          "label": "Static records (200)",
+          "avg4": 14.76,
+          "best4": null,
+          "note": "100 initial records plus 100 random records, fixed throughout RL; Best@4 not transcribed because no exact value is printed in the prose."
+        },
+        {
+          "id": "random_calibration",
+          "label": "Random calibration",
+          "avg4": 10.84,
+          "best4": 18.6
+        },
+        {
+          "id": "top_rated",
+          "label": "Top-rated calibration (LM2LM)",
+          "avg4": 17.06,
+          "best4": 23.4
+        }
+      ]
+    },
+    "reliability": {
+      "source": {
+        "label": "Section 4.5; Figure 5",
+        "url": "https://arxiv.org/pdf/2610.23344v2#page=9",
+        "page": 9,
+        "tex": "5_experiments_v2.tex / ssec:RQ2"
+      },
+      "extendedRlSteps": 128,
+      "extendedRealRuns": 236,
+      "comparison": "Each variant is scored by its own training RWM on real-executed held-out AR proposals.",
+      "static": {
+        "pairwiseAccuracy": [
+          {
+            "step": 16,
+            "value": 0.72
+          },
+          {
+            "step": 128,
+            "value": 0.37
+          }
+        ],
+        "advantageCosine": [
+          {
+            "step": 16,
+            "value": 0.69
+          },
+          {
+            "step": 128,
+            "value": -0.42
+          }
+        ],
+        "rewardGap": [
+          {
+            "step": 96,
+            "value": 2.0,
+            "approximate": true
+          }
+        ]
+      },
+      "calibrated": {
+        "pairwiseAccuracyAt128": 0.61,
+        "pairwiseAccuracyRange": [
+          0.61,
+          0.69
+        ],
+        "advantageCosineRange": [
+          0.5,
+          0.71
+        ],
+        "rewardGap": [
+          {
+            "step": 96,
+            "value": 0.85
+          },
+          {
+            "step": 128,
+            "value": 0.17
+          }
+        ]
+      },
+      "chancePairwiseAccuracy": 0.5,
+      "identicalProposalsAt96": {
+        "staticRecordsPairwiseAccuracy": 0.46,
+        "calibratedRecordsPairwiseAccuracy": 0.61
+      },
+      "plottingNote": "Only stated endpoints and ranges are transcribed. Do not invent intermediate learning-curve samples."
+    }
+  },
+  "environments": [
+    {
+      "family": "OLMo-3",
+      "domain": "ar",
+      "trainingTasks": [
+        "100m-4c",
+        "100m-8c",
+        "190m-1c",
+        "190m-2c",
+        "370m-1c",
+        "370m-2c",
+        "760m-1c"
+      ],
+      "trainingTaskCount": 7,
+      "heldoutTasks": [
+        {
+          "id": "100m-1c",
+          "states": 17,
+          "totalParametersMillions": 153,
+          "budget": "2.0B tokens",
+          "referenceLoss": 1.375,
+          "referenceSeedStd": 0.0011
+        },
+        {
+          "id": "100m-2c",
+          "states": 8,
+          "totalParametersMillions": 153,
+          "budget": "4.0B tokens",
+          "referenceLoss": 1.2939,
+          "referenceSeedStd": 0.0056
+        },
+        {
+          "id": "190m-4c",
+          "states": 4,
+          "totalParametersMillions": 267,
+          "budget": "15.2B tokens",
+          "referenceLoss": 1.1275,
+          "referenceSeedStd": 0.0017
+        }
+      ],
+      "heldoutTaskCount": 3,
+      "heldoutStates": 29,
+      "initialRecords": 16,
+      "baselinePoolRecords": 47,
+      "trainingData": "Dolma 3",
+      "metric": "Mean BPB over ten downstream tasks",
+      "description": "Autoregressive transformer",
+      "source": {
+        "label": "Tables 3 and 4; Appendix C.1",
+        "url": "https://arxiv.org/pdf/2610.23344v2#page=17",
+        "page": 17,
+        "tex": "7_appendix_v2.tex / tab:data, tab:heldout, app:env"
+      }
+    },
+    {
+      "family": "Qwen3",
+      "domain": "ar",
+      "trainingTasks": [
+        "q06b-1b",
+        "q06b-2b",
+        "q17b-1b",
+        "q17b-2b",
+        "q152m-8b",
+        "q267m-1b",
+        "q267m-2b"
+      ],
+      "trainingTaskCount": 7,
+      "heldoutTasks": [
+        {
+          "id": "q152m-2b",
+          "states": 8,
+          "totalParametersMillions": 153,
+          "budget": "2.0B tokens",
+          "referenceLoss": 1.3641,
+          "referenceSeedStd": 0.0025
+        },
+        {
+          "id": "q267m-4b",
+          "states": 4,
+          "totalParametersMillions": 267,
+          "budget": "4.0B tokens",
+          "referenceLoss": 1.1683,
+          "referenceSeedStd": 0.0042
+        }
+      ],
+      "heldoutTaskCount": 2,
+      "heldoutStates": 12,
+      "initialRecords": 25,
+      "baselinePoolRecords": 62,
+      "trainingData": "Dolma 3",
+      "metric": "Mean BPB over ten downstream tasks",
+      "description": "Official Qwen3 architecture and tokenizer",
+      "source": {
+        "label": "Tables 3 and 4; Appendix C.1",
+        "url": "https://arxiv.org/pdf/2610.23344v2#page=17",
+        "page": 17,
+        "tex": "7_appendix_v2.tex / tab:data, tab:heldout, app:env"
+      }
+    },
+    {
+      "family": "NanoChat",
+      "domain": "ar",
+      "trainingTasks": [
+        "d8-8k-0p82b",
+        "d8-8k-3p28b",
+        "d12-8k-8p59b",
+        "d16-8k-4p58b",
+        "d20-8k-8p49b"
+      ],
+      "trainingTaskCount": 5,
+      "heldoutTasks": [
+        {
+          "id": "d12-8k-2p15b",
+          "states": 17,
+          "totalParametersMillions": 286,
+          "budget": "2.15B tokens",
+          "referenceLoss": 0.8135,
+          "referenceSeedStd": 0.0007
+        }
+      ],
+      "heldoutTaskCount": 1,
+      "heldoutStates": 17,
+      "initialRecords": 15,
+      "baselinePoolRecords": 79,
+      "trainingData": "ClimbMix",
+      "metric": "BPB on a held-out ClimbMix validation shard",
+      "description": "Depth-parameterized transformer",
+      "source": {
+        "label": "Tables 3 and 4; Appendix C.1",
+        "url": "https://arxiv.org/pdf/2610.23344v2#page=17",
+        "page": 17,
+        "tex": "7_appendix_v2.tex / tab:data, tab:heldout, app:env"
+      }
+    },
+    {
+      "family": "Marin",
+      "domain": "ar",
+      "trainingTasks": [
+        "153m-2p9b",
+        "153m-8b",
+        "267m-2p9b",
+        "267m-8b",
+        "486m-2p9b"
+      ],
+      "trainingTaskCount": 5,
+      "heldoutTasks": [
+        {
+          "id": "486m-8b",
+          "states": 2,
+          "totalParametersMillions": 486,
+          "budget": "8.0B tokens",
+          "referenceLoss": 0.9959,
+          "referenceSeedStd": 0.0008
+        }
+      ],
+      "heldoutTaskCount": 1,
+      "heldoutStates": 2,
+      "initialRecords": 11,
+      "baselinePoolRecords": 30,
+      "trainingData": "Dolma 3",
+      "metric": "Mean BPB over ten downstream tasks",
+      "description": "Marin architecture",
+      "source": {
+        "label": "Tables 3 and 4; Appendix C.1",
+        "url": "https://arxiv.org/pdf/2610.23344v2#page=17",
+        "page": 17,
+        "tex": "7_appendix_v2.tex / tab:data, tab:heldout, app:env"
+      }
+    },
+    {
+      "family": "E2D2",
+      "domain": "diffusion",
+      "trainingTasks": [
+        "34m-6e18",
+        "113m-3e18",
+        "113m-6e18",
+        "231m-6e18"
+      ],
+      "trainingTaskCount": 4,
+      "heldoutTasks": [
+        {
+          "id": "66m-1e18",
+          "states": 6,
+          "totalParametersMillions": 115,
+          "budget": "1e18 FLOPs / 1.55B tokens",
+          "referenceLoss": 3.5508,
+          "referenceSeedStd": 0.0037
+        }
+      ],
+      "heldoutTaskCount": 1,
+      "heldoutStates": 6,
+      "initialRecords": 11,
+      "baselinePoolRecords": 31,
+      "trainingData": "SlimPajama",
+      "metric": "NLL in nats per token",
+      "description": "Encoder-decoder masked diffusion; block-autoregressive",
+      "source": {
+        "label": "Tables 3 and 4; Appendix C.1",
+        "url": "https://arxiv.org/pdf/2610.23344v2#page=17",
+        "page": 17,
+        "tex": "7_appendix_v2.tex / tab:data, tab:heldout, app:env"
+      }
+    },
+    {
+      "family": "BD3LM",
+      "domain": "diffusion",
+      "trainingTasks": [
+        "34m-6e18",
+        "113m-3e18",
+        "113m-1e19",
+        "231m-6e18"
+      ],
+      "trainingTaskCount": 4,
+      "heldoutTasks": [
+        {
+          "id": "113m-6e18",
+          "states": 6,
+          "totalParametersMillions": 162,
+          "budget": "6e18 FLOPs / 3.46B tokens",
+          "referenceLoss": 3.1218,
+          "referenceSeedStd": 0.0005
+        }
+      ],
+      "heldoutTaskCount": 1,
+      "heldoutStates": 6,
+      "initialRecords": 7,
+      "baselinePoolRecords": 19,
+      "trainingData": "SlimPajama",
+      "metric": "NLL in nats per token",
+      "description": "Block diffusion; block-structured attention",
+      "source": {
+        "label": "Tables 3 and 4; Appendix C.1",
+        "url": "https://arxiv.org/pdf/2610.23344v2#page=17",
+        "page": 17,
+        "tex": "7_appendix_v2.tex / tab:data, tab:heldout, app:env"
+      }
+    },
+    {
+      "family": "MDM",
+      "domain": "diffusion",
+      "trainingTasks": [
+        "34m-6e18",
+        "85m-6e18",
+        "85m-1e19",
+        "231m-6e18"
+      ],
+      "trainingTaskCount": 4,
+      "heldoutTasks": [],
+      "heldoutTaskCount": 0,
+      "heldoutStates": 0,
+      "initialRecords": 6,
+      "baselinePoolRecords": 14,
+      "trainingData": "SlimPajama",
+      "metric": "NLL in nats per token",
+      "description": "Full-sequence bidirectional masked diffusion; training only",
+      "source": {
+        "label": "Tables 3 and 4; Appendix C.1",
+        "url": "https://arxiv.org/pdf/2610.23344v2#page=17",
+        "page": 17,
+        "tex": "7_appendix_v2.tex / tab:data, tab:heldout, app:env"
+      }
+    },
+    {
+      "family": "E2D2-SW",
+      "domain": "diffusion",
+      "trainingTasks": [
+        "34m-6e18",
+        "113m-3e18",
+        "113m-1e19",
+        "206m-6e18"
+      ],
+      "trainingTaskCount": 4,
+      "heldoutTasks": [
+        {
+          "id": "113m-6e18",
+          "states": 6,
+          "totalParametersMillions": 196,
+          "budget": "6e18 FLOPs / 2.44B tokens",
+          "referenceLoss": 3.2846,
+          "referenceSeedStd": 0.0026
+        }
+      ],
+      "heldoutTaskCount": 1,
+      "heldoutStates": 6,
+      "initialRecords": 9,
+      "baselinePoolRecords": 18,
+      "trainingData": "SlimPajama",
+      "metric": "NLL in nats per token",
+      "description": "Token-causal encoder with sliding-window decoder training",
+      "source": {
+        "label": "Tables 3 and 4; Appendix C.1",
+        "url": "https://arxiv.org/pdf/2610.23344v2#page=17",
+        "page": 17,
+        "tex": "7_appendix_v2.tex / tab:data, tab:heldout, app:env"
+      }
+    }
+  ],
+  "authors": [
+    {
+      "name": "Minhua Lin",
+      "affiliations": [
+        1
+      ]
+    },
+    {
+      "name": "Zijun Wang",
+      "affiliations": [
+        2
+      ]
+    },
+    {
+      "name": "Zewen Liu",
+      "affiliations": [
+        3
+      ]
+    },
+    {
+      "name": "Zhaotian Weng",
+      "affiliations": [
+        4
+      ]
+    },
+    {
+      "name": "Bing He",
+      "affiliations": [
+        5
+      ]
+    },
+    {
+      "name": "Zhan Shi",
+      "affiliations": [
+        5
+      ]
+    },
+    {
+      "name": "Benoit Dumoulin",
+      "affiliations": [
+        5
+      ]
+    },
+    {
+      "name": "Xiang Zhang",
+      "affiliations": [
+        1
+      ]
+    },
+    {
+      "name": "Suhang Wang",
+      "affiliations": [
+        1
+      ]
+    },
+    {
+      "name": "Hanqing Lu",
+      "affiliations": [
+        5
+      ]
+    }
+  ],
+  "affiliations": [
+    {
+      "id": 1,
+      "name": "The Pennsylvania State University"
+    },
+    {
+      "id": 2,
+      "name": "UC Santa Cruz"
+    },
+    {
+      "id": 3,
+      "name": "Emory University"
+    },
+    {
+      "id": 4,
+      "name": "UC Santa Barbara"
+    },
+    {
+      "id": 5,
+      "name": "Amazon"
+    }
+  ],
+  "caveats": [
+    "This is proposal-level improvement in controlled LM development, not a demonstration of end-to-end recursive self-improvement.",
+    "Eight model families are used in training; real held-out evaluation covers seven because MDM has no held-out task.",
+    "AR and diffusion gains use different units and must not share an unlabeled numerical scale.",
+    "Main results average equally over states, not equally over families. There are 29 OLMo-3, 12 Qwen3, 17 NanoChat, 2 Marin, and 6 states for each evaluated diffusion family.",
+    "LM2LM has the best aggregate Avg@4 and Best@4, but GPT-6-sol-ICL has lower negative-gain rates; individual-family wins are not universal.",
+    "The 33% reduction is for data-generation cost against ICL with 300 records. Including proposer RL training gives about 6.5% lower reported total cost using rounded figures.",
+    "The family-held-out Qwen3 experiment is separate from the main task-held-out benchmark.",
+    "The RWM is frozen; on-policy calibration updates its context records. The proposer is the model trained with RL.",
+    "The paper's cost accounting omits proposer and builder inference and shared state construction.",
+    "Calibration corrects selected high-rated proposals using real outcomes; surrogate predictions remain imperfect."
+  ],
+  "verification": {
+    "sourceVersion": "arXiv v2, 2 November 2026",
+    "method": "Non-comment LaTeX table/prose checked against text extracted from the published v2 PDF.",
+    "staleCommentValuesExcluded": [
+      "AR/diffusion main Avg@4 15.07/6.88",
+      "static pairwise accuracy 0.34; calibrated 0.59 at step 128",
+      "static advantage cosine -0.43",
+      "calibrated reward gap 0.35 at step 128"
+    ],
+    "publishedValuesUsed": [
+      "main Avg@4 17.06/7.10",
+      "static pairwise accuracy 0.37; calibrated 0.61 at step 128",
+      "static advantage cosine -0.42",
+      "calibrated reward gap 0.17 at step 128"
+    ]
+  },
+  "display": {
+    "providers": {
+      "alibaba": {
+        "name": "Alibaba",
+        "color": "#FF7018",
+        "logo": "assets/model-logos/alibaba.svg"
+      },
+      "openai": {
+        "name": "OpenAI",
+        "color": "#1F1F1F",
+        "logo": "assets/model-logos/openai.svg"
+      }
+    },
+    "methods": {
+      "base": {
+        "label": "Base",
+        "model": "Qwen3.8 27B",
+        "provider": "alibaba",
+        "description": "Untuned proposer"
+      },
+      "base_icl": {
+        "label": "Base + records",
+        "model": "Qwen3.8 27B",
+        "provider": "alibaba",
+        "description": "300-record ICL"
+      },
+      "gpt6_sol": {
+        "label": "GPT-6 Sol",
+        "model": "GPT-6 Sol",
+        "provider": "openai",
+        "description": "Zero-shot proposer"
+      },
+      "gpt6_sol_icl": {
+        "label": "GPT-6 Sol + records",
+        "model": "GPT-6 Sol",
+        "provider": "openai",
+        "description": "300-record ICL"
+      },
+      "sft": {
+        "label": "SFT",
+        "model": "Qwen3.8 27B",
+        "provider": "alibaba",
+        "description": "Supervised fine-tuning"
+      },
+      "rft_real": {
+        "label": "RFT-Real",
+        "model": "Qwen3.8 27B",
+        "provider": "alibaba",
+        "description": "Rejection-sampling fine-tuning"
+      },
+      "lm2lm": {
+        "label": "LM2LM",
+        "model": "Qwen3.8 27B",
+        "provider": "alibaba",
+        "description": "Trained proposer"
+      }
+    }
+  }
+}
