@@ -2,187 +2,391 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Research World Models — A world model for AI research</title>
+<meta name="description" content="Research World Models predict which experiments are worth running from past experimental results. With 320 records in context, all 13 tested LLMs beat the best model without records; records from other environments cut Qwen3 selection regret by 78%.">
+<meta name="theme-color" content="#F7F8F5">
+<link rel="canonical" href="https://a-evo-lab.github.io/rwm/">
+<meta property="og:title" content="13 models. Add experimental experience.">
+<meta property="og:description" content="On OLMo3-100M, every tested model with experimental records beats the best without them at ranking experiment gains. Fixed weights. Records in context.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://a-evo-lab.github.io/rwm/">
+<meta property="og:site_name" content="A-EVO Lab">
+<meta property="og:image" content="https://a-evo-lab.github.io/rwm/assets/social-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="13 of 13 tested LLMs with 320 experimental records exceed the best no-record score on OLMo3-100M.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="13 models. Add experimental experience.">
+<meta name="twitter:description" content="Fixed weights. Records in context. All 13 tested LLMs exceed the no-record best at ranking experiment gains on OLMo3-100M.">
+<meta name="twitter:image" content="https://a-evo-lab.github.io/rwm/assets/social-preview.png">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#f7f8f5;--paper:#fff;--ink:#14231f;--muted:#5f6b65;--green:#14866d;--green-d:#0f5f4d;--line:#dfe5df;--soft:#eaf2ed;--amber:#b7862f;--violet:#5b4b8a;--row:40px;--sans:Inter,"Helvetica Neue",Arial,sans-serif;--serif:Georgia,"Times New Roman",serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--green-d)}
+img{max-width:100%;height:auto;display:block}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.skip{position:absolute;left:-999px}.skip:focus{left:16px;top:16px;background:#fff;padding:8px 12px;z-index:9}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px}
 
-<title>Research World Models — Predict, transfer, discover</title>
-<meta name="description" content="Language Models as AI Research World Models. Predict experiments, transfer research knowledge across environments, and make better decisions under limited compute budgets.">
-<meta name="theme-color" content="#F7F8F5"><meta property="og:title" content="A world model for AI research."><meta property="og:description" content="2,653 experiments across nine environments. Research knowledge improves prediction, transfers to new environments, and guides better experiments."><meta property="og:type" content="website"><meta property="og:image" content="assets/research-environments.png?v=314dff36269a">
-<link rel="icon" href="assets/favicon.svg?v=a3d1480d7733" type="image/svg+xml"><link rel="stylesheet" href="style.css?v=688ec2f2e1eb"><link rel="stylesheet" href="story.css?v=fef948fcda55">
-<script src="assets/benchmark-data.js?v=e873cea950e0" defer></script><script src="app.js?v=1bf3cc052497" defer></script>
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;border-bottom:1px solid var(--line)}
+.mark{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-weight:650;letter-spacing:-.01em}
+.mark svg{width:26px;height:26px;fill:none;stroke:var(--green);stroke-width:3}
+.top nav{display:flex;gap:22px;align-items:center;font-size:14px}
+.top nav a{color:var(--ink);text-decoration:none}
+.top nav a.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 14px}
+.top nav .opt{display:inline}
+@media (max-width:720px){.top nav .opt{display:none}}
+
+/* hero */
+.hero{padding:64px 24px 40px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--green-d);text-transform:uppercase}
+h1{font-size:clamp(38px,6.2vw,72px);line-height:1.02;letter-spacing:-.035em;margin:16px 0 20px;font-weight:650;max-width:14ch}
+h1 em,h2 em{font-family:var(--serif);font-weight:400;color:var(--green);letter-spacing:-.02em}
+.sub{font-size:clamp(22px,2.8vw,30px);font-weight:600;letter-spacing:-.02em;margin:-4px 0 14px}
+.lede{font-size:clamp(17px,2vw,20px);color:var(--muted);max-width:38em;margin:0 0 28px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px}
+.cta{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:8px;font-weight:600;font-size:15px;text-decoration:none}
+.cta.dark{background:var(--ink);color:#fff}
+.cta.light{border:1px solid var(--line);background:#fff;color:var(--ink)}
+.authors{font-size:14px;color:var(--muted);margin:0;max-width:60em}
+.authors a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.authors a:hover{border-color:var(--green)}
+.authors small{color:var(--muted)}
+.film{margin:32px 0 0;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}
+.film video{width:100%;height:auto;display:block;border-radius:8px;aspect-ratio:16/9;background:#f6f6f3}
+.film figcaption{font-size:13px;color:var(--muted);padding:10px 6px 4px}
+@media (max-width:720px){.film video{aspect-ratio:4/5}}
+.results{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 22px 18px;display:flex;flex-direction:column;text-decoration:none;color:var(--ink);transition:border-color .2s,transform .2s}
+.card:hover{border-color:var(--green);transform:translateY(-2px)}
+.card .k{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--green-d);text-transform:uppercase}
+.card .n{font-size:clamp(44px,5vw,58px);font-weight:650;letter-spacing:-.04em;line-height:1.05;margin:10px 0 6px}
+.card .n small{font-size:.45em;color:var(--muted);font-weight:500;letter-spacing:0}
+.card p{margin:0 0 14px;font-size:15px;line-height:1.45}
+.card .src{margin-top:auto;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.scale{margin:18px 0 0;font-size:13.5px;color:var(--muted)}
+.scale b{color:var(--ink);font-weight:600}
+@media (max-width:860px){.results{grid-template-columns:1fr}.card .n{font-size:46px}.hero{padding-top:40px}}
+
+/* sections */
+section.block{padding:72px 0;border-top:1px solid var(--line)}
+.num{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--green-d);text-transform:uppercase;margin-bottom:12px}
+h2{font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-.03em;margin:0 0 16px;font-weight:650;max-width:20ch}
+.intro{font-size:17.5px;color:var(--muted);max-width:40em;margin:0 0 36px}
+.fine{font-size:13px;color:var(--muted)}
+
+/* method loop */
+.loop{display:grid;grid-template-columns:1fr auto 1.15fr auto 1fr auto 1fr;align-items:stretch;gap:10px}
+.step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}
+.step b{display:block;font-size:15px;margin-bottom:4px}
+.step span{font-size:13.5px;color:var(--muted);line-height:1.45;display:block}
+.step.model{background:var(--ink);border-color:var(--ink);color:#fff}
+.step.model span{color:#b9c7c0}
+.arrow{align-self:center;color:var(--green);font-size:22px}
+.back{margin-top:12px;font-size:13.5px;color:var(--green-d);text-align:center;border:1px dashed #b9d4c8;border-radius:10px;padding:8px}
+@media (max-width:860px){.loop{grid-template-columns:1fr}.arrow{transform:rotate(90deg);justify-self:center;line-height:1}}
+
+/* leaderboard */
+.lb-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px}
+.toggle{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:10px;padding:4px}
+.toggle button{border:0;background:none;font:600 14px var(--sans);padding:9px 14px;border-radius:7px;cursor:pointer;color:var(--muted)}
+.toggle button[aria-pressed=true]{background:var(--ink);color:#fff}
+.board{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px 12px}
+.status{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:14px;margin-bottom:12px}
+.status strong{color:var(--green-d)}
+.rows{position:relative;height:calc(var(--row)*13)}
+.row{position:absolute;left:0;right:0;top:0;height:var(--row);display:grid;grid-template-columns:26px minmax(120px,210px) 1fr 58px;align-items:center;gap:10px;transition:transform .9s cubic-bezier(.6,.05,.25,1)}
+.rk{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.nm{display:flex;align-items:center;gap:8px;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nm img{width:18px;height:18px;border-radius:4px;flex:none;object-fit:contain}
+.lane{position:relative;height:22px}
+.bar{position:absolute;top:3px;height:16px;border-radius:4px;background:#b9c2bd;transition:left .9s cubic-bezier(.6,.05,.25,1),width .9s cubic-bezier(.6,.05,.25,1),background .6s}
+.after .bar{background:var(--green)}
+.zero,.base{position:absolute;top:-6px;bottom:-6px;width:0;border-left:1px solid #cfd6d1}
+.base{border-left:1.5px dashed var(--amber)}
+.sc{font-size:13.5px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.axis{display:grid;grid-template-columns:26px minmax(120px,210px) 1fr 58px;gap:10px;font-size:11.5px;color:var(--muted);margin-top:8px}
+.axis .ticks{position:relative;height:16px}
+.axis .ticks span{position:absolute;transform:translateX(-50%)}
+.baselbl{position:absolute;top:-22px;transform:translateX(-50%);font-size:11.5px;color:var(--amber);white-space:nowrap;font-weight:600}
+.lanehead{position:relative;height:18px;margin-left:calc(26px + 10px)}
+.below{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-top:16px}
+.note{background:var(--soft);border-radius:12px;padding:16px 18px;font-size:15px}
+.note b{font-weight:650}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;padding:0 18px}
+details summary{cursor:pointer;padding:14px 0;font-weight:600;font-size:15px;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"+";display:inline-block;width:18px;color:var(--green)}
+details[open] summary::before{content:"–"}
+details video{width:100%;border-radius:8px;margin-bottom:16px;background:#eef1ee}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-bottom:16px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+th{font-size:12px;color:var(--muted);font-weight:600}
+td.r,th.r{text-align:right}
+.tblwrap{overflow-x:auto}
+@media (max-width:860px){.below{grid-template-columns:1fr}}
+@media (max-width:560px){:root{--row:36px}.row,.axis{grid-template-columns:20px 112px 1fr 44px;gap:6px}.lanehead{margin-left:26px}.nm{font-size:12px}.nm img{width:15px;height:15px}.sc{font-size:12px}.board{padding:14px 10px 10px}}
+
+/* transfer & decisions */
+.fig{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.fig img{width:100%}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px}
+.stat .k{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--green-d);text-transform:uppercase}
+.stat .v{font-size:30px;font-weight:650;letter-spacing:-.03em;margin:6px 0 2px}
+.stat .v s{color:var(--muted);text-decoration:none;font-weight:500}
+.stat p{margin:0;font-size:14px;color:var(--muted);line-height:1.45}
+.caveat{margin-top:16px;border-left:3px solid var(--amber);padding:6px 0 6px 14px;font-size:15px}
+@media (max-width:860px){.stats{grid-template-columns:1fr}}
+
+/* environments & paper */
+.envs td:nth-child(3),.envs th:nth-child(3){text-align:right}
+.tag{display:inline-block;font-size:11px;font-weight:700;border-radius:4px;padding:1px 6px;margin-left:4px;background:var(--soft);color:var(--green-d)}
+.tag.c{background:#efedff;color:var(--violet)}
+.close{font-family:var(--serif);font-size:clamp(22px,2.6vw,30px);line-height:1.35;max-width:30em;margin:48px 0 36px;letter-spacing:-.01em}
+.paper{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px}
+.paper h3{margin:0 0 8px;font-size:22px;letter-spacing:-.02em}
+pre{background:#f1f4f1;border-radius:8px;padding:14px;overflow-x:auto;font-size:12.5px;line-height:1.5;margin:14px 0 0}
+.copy{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 12px;font:600 13px var(--sans);cursor:pointer;margin-top:12px}
+footer{padding:40px 0 56px;font-size:13px;color:var(--muted)}
+</style>
 </head>
 <body>
-<a class="skip-link" href="#leaderboard">Skip to interactive results</a>
-<header class="site-header wrap">
-<a class="wordmark" href="#" aria-label="Research World Models home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 25V15h6v10M13 25V9h6v16M23 25V3h6v22"/></svg><span>Research World Models<span class="wordmark-sub">A study of experimental experience</span></span></a>
-<nav aria-label="Main navigation"><a href="../index.html">← A-EVO Lab</a><a href="#research-question">The paper</a><a href="#environments">Environments</a><a href="#transfer">Transfer</a><a class="nav-paper" href="https://arxiv.org/abs/2610.12235" target="_blank" rel="noopener">Read the paper <span>↗</span></a></nav>
+<a class="skip" href="#leaderboard">Skip to results</a>
+<header class="top">
+  <a class="mark" href="../"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 25V15h6v10M13 25V9h6v16M23 25V3h6v22"/></svg>Research World Models</a>
+  <nav aria-label="Main"><a class="opt" href="#method">Method</a><a class="opt" href="#leaderboard">Results</a><a class="opt" href="#transfer">Transfer</a><a class="btn" href="https://arxiv.org/abs/2610.12235" target="_blank" rel="noopener">Paper ↗</a></nav>
 </header>
+
 <main>
-
-<section class="hero wrap story-hero" id="paper-overview">
-<div class="eyebrow"><span class="live-dot"></span> LANGUAGE MODELS AS AI RESEARCH WORLD MODELS <span class="edition">RESEARCH / 2026</span></div>
-<div class="hero-grid"><div><h1>A world model<br>for <em>AI research.</em></h1><p class="hero-subtitle">Can research taste be measured?</p><p class="hero-description">Research agents can propose more experiments than they can run. We show how language models use experimental records to predict outcomes, transfer knowledge across environments, and choose better experiments.</p><div class="hero-actions"><a class="button primary" href="#research-question">Explore the study <span>↓</span></a><button class="hero-film-link" id="hero-play"><span>▶</span> Watch the film <span>14 sec</span></button></div></div>
-<aside class="hero-note"><div class="note-top"><span>KNOWLEDGE THAT TRAVELS</span><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M8 29 29 8M8 8h21v21"/></svg></div><div class="note-stat">78<span>% ↓</span></div><p>lower selection regret on Qwen3, using experience from other environments.</p><div class="note-rule"></div><small>Zero Qwen3 experimental records.<br>Same RWM. Reused research knowledge.</small><a class="note-case-link" href="#qwen-transfer">See the transfer experiment ↗</a></aside></div>
-<div class="paper-byline" aria-label="Paper authors">
-  <span class="byline-label">AUTHORS</span>
-  <div class="byline-content">
-    <ul class="byline-list" role="list">
-      <li><a href="https://asillycat.github.io/" target="_blank" rel="noopener">Zijun Wang<sup aria-label="equal contribution">*</sup></a></li>
-      <li><a href="https://nuuuh.github.io/" target="_blank" rel="noopener">Zewen Liu<sup aria-label="equal contribution">*</sup></a></li>
-      <li><a href="https://ventr1c.github.io/" target="_blank" rel="noopener">Minhua Lin</a></li>
-      <li><a href="https://zhaotianweng.github.io/" target="_blank" rel="noopener">Zhaotian Weng</a></li>
-      <li><a href="https://scholar.google.com/citations?user=yROrWMkAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener">Zhan Shi</a></li>
-      <li><a href="https://binghe2727.github.io/" target="_blank" rel="noopener">Bing He</a></li>
-      <li><a href="https://yisisang.github.io/" target="_blank" rel="noopener">Yisi Sang</a></li>
-      <li><a href="https://www.dakuowang.com/" target="_blank" rel="noopener">Dakuo Wang</a></li>
-      <li><a href="https://www.amazon.science/author/benoit-dumoulin" target="_blank" rel="noopener">Benoit Dumoulin</a></li>
-      <li><a href="https://www.cs.emory.edu/~wjin30/" target="_blank" rel="noopener">Wei Jin</a></li>
-      <li><a href="https://yuyinzhou.github.io/" target="_blank" rel="noopener">Yuyin Zhou</a></li>
-      <li><a href="https://cihangxie.github.io/" target="_blank" rel="noopener">Cihang Xie</a></li>
-      <li><a href="https://hanqinglu.github.io/" target="_blank" rel="noopener">Hanqing Lu</a></li>
-    </ul>
+<!-- 1. HERO -->
+<section class="hero wrap" id="top">
+  <div class="eyebrow">Language models as AI research world models</div>
+  <h1>A world model <br>for <em>AI research.</em></h1>
+  <p class="sub">Can research taste be measured?</p>
+  <p class="lede">Research agents can propose far more experiments than anyone can afford to run. We give language models past experimental results and ask them to predict which new ideas are worth the compute.</p>
+  <div class="actions">
+    <a class="cta dark" href="#leaderboard">See all 13 models ↓</a>
+    <a class="cta light" href="https://arxiv.org/abs/2610.12235" target="_blank" rel="noopener">Read the paper ↗</a>
   </div>
-</div>
-<div class="story-links"><a href="#research-question"><span>01</span> Predict outcomes</a><a href="#transfer"><span>02</span> Transfer knowledge</a><a href="#findings"><span>03</span> Make better research decisions</a></div>
-</section>
-<section class="lead-film wrap" id="film" aria-label="Fourteen-second introduction: experience changes the model rankings">
-<div class="lead-film-heading"><span class="eyebrow small"><span class="live-dot"></span> THE SAME MODELS. ADD EXPERIMENTAL EXPERIENCE.</span></div>
-<div class="lead-film-frame"><video id="lead-video" autoplay muted loop playsinline controls preload="auto" poster="assets/rwm-video-start.jpg?v=62643b7e5a46" aria-label="Fourteen-second animation comparing 13 research world model backbones with and without experimental records"><source src="assets/rwm-leaderboard.mp4?v=a6c342b918bb" type="video/mp4">Your browser does not support video. <a href="assets/rwm-leaderboard.mp4?v=a6c342b918bb">Download the film.</a></video></div>
-<div class="lead-film-footer"><div><a href="assets/rwm-leaderboard.mp4?v=a6c342b918bb" download>Download MP4 ↓</a><a class="continue-link" href="#research-question">Explore the paper <span>↓</span></a></div></div>
-</section>
+  <p class="authors">
+    <a href="https://asillycat.github.io/">Zijun Wang</a>*, <a href="https://nuuuh.github.io/">Zewen Liu</a>*, <a href="https://ventr1c.github.io/">Minhua Lin</a>, <a href="https://zhaotianweng.github.io/">Zhaotian Weng</a>, <a href="https://scholar.google.com/citations?user=yROrWMkAAAAJ">Zhan Shi</a>, <a href="https://binghe2727.github.io/">Bing He</a>, <a href="https://yisisang.github.io/">Yisi Sang</a>, <a href="https://www.dakuowang.com/">Dakuo Wang</a>, <a href="https://www.amazon.science/author/benoit-dumoulin">Benoit Dumoulin</a>, <a href="https://www.cs.emory.edu/~wjin30/">Wei Jin</a>, <a href="https://yuyinzhou.github.io/">Yuyin Zhou</a>, <a href="https://cihangxie.github.io/">Cihang Xie</a>, <a href="https://hanqinglu.github.io/">Hanqing Lu</a> <small>· *equal contribution</small>
+  </p>
 
-
-
-<section class="proof-strip wrap" aria-label="Study scale"><div><strong>2,653</strong><span>experimental records</span></div><div><strong>9</strong><span>research environments</span></div><div><strong>171,862</strong><span>H100 GPU-hours of experiments</span></div><div class="strip-description">Real experiments.<br>Reusable research knowledge.</div></section>
-<section class="idea-section wrap paper-question" id="research-question"><div class="section-intro"><div class="eyebrow small">01 / THE RESEARCH QUESTION</div><h2>Predict an experiment.<br><em>Before spending the compute.</em></h2><p class="question-lead">A plausible proposal is cheap to generate.<br>Finding out whether it works is expensive.</p><p>We study language models as <strong>Research World Models (RWMs)</strong>: given a research environment, a concrete code or recipe change, and past experimental records, predict the intervention’s performance gain before execution.</p><p class="question-emphasis">The central question: can experience from one research environment help predict outcomes in another?</p><a class="text-link" href="https://arxiv.org/pdf/2610.12235#page=4" target="_blank" rel="noopener">Inside the method <span>↗</span></a></div><div class="method-diagram" aria-label="Experiment records and candidate interventions feed a Research World Model, which ranks candidates for execution. Measured outcomes return to the record."><div class="record-stack"><div class="mini-label">RECORDS FROM THIS ENVIRONMENT — OR ANOTHER</div><div class="record"><span>01</span> Environment <i>E</i></div><div class="record"><span>02</span> Intervention <i>a</i></div><div class="record"><span>03</span> Measured outcome <i>g</i></div></div><div class="flow-line"><span>Research knowledge</span><b>↓</b></div><div class="candidate-input"><span>+</span> Target environment + candidate intervention</div><div class="world-model"><div class="model-icon">W</div><div><small>PREDICT BEFORE EXECUTION</small><strong>Research World Model</strong></div><span class="model-plus">+</span></div><div class="flow-line"><b>↓</b><span>Rank predicted gains</span></div><div class="execute"><span class="execute-dot"></span> Execute the most promising <span>↗</span></div><div class="return-loop">↳ &nbsp; Measured outcomes become new records &nbsp; ↰</div><p class="mechanism-note"><strong>Fixed model parameters. Experience supplied in context.</strong><br>The RWM predicts gains; selected experiments still run in the real environment.</p></div></section>
-<section class="atlas-section wrap" id="environments" aria-labelledby="atlas-title">
-  <div class="atlas-heading">
-    <div><div class="eyebrow small">02 / THE RESEARCH LANDSCAPE</div><h2 id="atlas-title">Across the research lifecycle.</h2></div>
-    <p>Pretraining, post-training, and inference<br>across nine research environments.</p>
-  </div>
-  <figure class="environment-atlas">
-    <div class="atlas-stages">
-      <section class="atlas-stage atlas-pretraining" aria-labelledby="atlas-pretraining-title">
-        <header class="atlas-stage-head"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="m4 10 12-6 12 6-12 6zM4 16l12 6 12-6M4 22l12 6 12-6"/></svg><div><h3 id="atlas-pretraining-title">Pretraining</h3><p>Learn the foundations</p></div><span class="atlas-stage-count">06</span></header>
-        <div class="atlas-pre-grid">
-          <div class="atlas-env"><div class="atlas-env-top"><strong>OLMo3</strong><span>100M</span></div><p>Autoregressive pretraining</p><div class="atlas-env-bottom"><span>480 records</span><span class="atlas-badges"><abbr title="In-environment evaluation">I</abbr><abbr class="atlas-cross" title="Cross-environment target">C</abbr></span></div></div>
-          <div class="atlas-env"><div class="atlas-env-top"><strong>OLMo3</strong><span>190M</span></div><p>Autoregressive pretraining</p><div class="atlas-env-bottom"><span>132 records</span><span class="atlas-badges"><abbr class="atlas-cross" title="Cross-environment target">C</abbr></span></div></div>
-          <div class="atlas-env"><div class="atlas-env-top"><strong>Marin</strong><span>153M</span></div><p>Autoregressive pretraining</p><div class="atlas-env-bottom"><span>132 records</span><span class="atlas-badges"><abbr class="atlas-cross" title="Cross-environment target">C</abbr></span></div></div>
-          <div class="atlas-env"><div class="atlas-env-top"><strong>Nanochat</strong><span>149M</span></div><p>Autoregressive pretraining</p><div class="atlas-env-bottom"><span>132 records</span><span class="atlas-badges"><abbr class="atlas-cross" title="Cross-environment target">C</abbr></span></div></div>
-          <div class="atlas-env atlas-env-qwen"><div class="atlas-env-top"><strong>Qwen3</strong><span>153M</span></div><p>Autoregressive pretraining</p><div class="atlas-env-bottom"><span>132 records</span><span class="atlas-badges"><abbr class="atlas-cross" title="Cross-environment target">C</abbr></span></div></div>
-          <div class="atlas-env"><div class="atlas-env-top"><strong>E2D2</strong><span>170M</span></div><p>Diffusion language model</p><div class="atlas-env-bottom"><span>661 records</span><span class="atlas-badges"><abbr title="In-environment evaluation">I</abbr></span></div></div>
-        </div>
-        <div class="atlas-stage-metric">OUTCOME <span>Bits per byte ↓</span></div>
-      </section>
-      <section class="atlas-stage atlas-posttraining" aria-labelledby="atlas-posttraining-title">
-        <header class="atlas-stage-head"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 8h22M5 16h22M5 24h22M11 4v8M22 12v8M13 20v8"/></svg><div><h3 id="atlas-posttraining-title">Post-training</h3><p>Build specialized capabilities</p></div><span class="atlas-stage-count">02</span></header>
-        <div class="atlas-post-grid">
-          <div class="atlas-env"><span class="atlas-task-symbol" aria-hidden="true">∑</span><div class="atlas-env-top"><strong>Math distillation</strong></div><p>Qwen3-1.7B</p><div class="atlas-env-bottom"><span>280 records</span><span class="atlas-badges"><abbr title="In-environment evaluation">I</abbr></span></div><span class="atlas-task-metric">AIME24/25 avg@32 ↑</span></div>
-          <div class="atlas-env"><span class="atlas-task-symbol atlas-code" aria-hidden="true">&lt;/&gt;</span><div class="atlas-env-top"><strong>Code RL</strong></div><p>OLMo-3-7B</p><div class="atlas-env-bottom"><span>149 records</span><span class="atlas-badges"><abbr title="In-environment evaluation">I</abbr></span></div><span class="atlas-task-metric">LiveCodeBench ↑</span></div>
-        </div>
-        <div class="atlas-stage-metric">OUTCOME <span>Task performance ↑</span></div>
-      </section>
-      <section class="atlas-stage atlas-inference" aria-labelledby="atlas-inference-title">
-        <header class="atlas-stage-head"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="m19 3-13 16h9l-2 10L27 12h-9z"/></svg><div><h3 id="atlas-inference-title">Inference</h3><p>Make serving more efficient</p></div><span class="atlas-stage-count">01</span></header>
-        <div class="atlas-env atlas-serving"><div class="atlas-serving-art" aria-hidden="true"><svg viewBox="0 0 180 120"><rect x="49" y="26" width="82" height="64" rx="8"/><rect x="61" y="38" width="58" height="40" rx="3"/><path d="M63 14v12M81 14v12M99 14v12M117 14v12M63 90v12M81 90v12M99 90v12M117 90v12M37 40h12M37 58h12M37 76h12M131 40h12M131 58h12M131 76h12"/><path class="atlas-chip-flow" d="m69 58 12-9v18zm20 0 12-9v18zm20 0h2"/></svg></div><div class="atlas-env-top"><strong>Inference optimization</strong></div><p>Gemma-4-E4B-it / vLLM</p><div class="atlas-env-bottom"><span>555 records</span><span class="atlas-badges"><abbr title="In-environment evaluation">I</abbr></span></div><span class="atlas-task-metric">Quality-constrained throughput</span></div>
-        <div class="atlas-stage-metric">OUTCOME <span>Tokens per second ↑</span></div>
-      </section>
-    </div>
-    <div class="atlas-legend"><span><i class="atlas-key">I</i> In-environment evaluation</span><span><i class="atlas-key atlas-cross">C</i> Cross-environment target</span></div>
-    <div class="atlas-merge" aria-hidden="true"><span></span><span></span><span></span></div>
-    <div class="atlas-collector"><div><span class="atlas-flow-label">REAL EXPERIMENTAL EXPERIENCE</span><strong>2,653 <span>experimental records</span></strong><p>171,862 H100 GPU-hours of experimentation</p></div><span aria-hidden="true">→</span><div><span class="atlas-flow-label">ACCUMULATE AND REUSE</span><strong>Research knowledge</strong><p>Environment · intervention · measured outcome</p></div></div>
-    <figcaption class="atlas-caption"><p>The corpus spans all nine environments. Cross-environment transfer is evaluated among the <strong>five autoregressive pretraining environments</strong>.</p><a href="assets/research-environments.svg?v=73e65622c579" download>Download figure <span>↓</span></a></figcaption>
+  <figure class="film">
+    <video id="lead" autoplay muted loop playsinline controls preload="metadata" poster="assets/rwm-leaderboard-poster.jpg" aria-label="14-second animation: 13 language models ranking experiment gains with and without 320 experiment records">
+      <source src="assets/rwm-leaderboard.mp4" type="video/mp4">
+    </video>
+    <figcaption>The same 13 models, before and after 320 experiment records go into context. OLMo3-100M · 160 held-out queries · Figure 3. <a href="assets/rwm-leaderboard-4x5.mp4" download>Download phone version ↓</a></figcaption>
   </figure>
-</section>
 
-<section class="transfer-section wrap" id="transfer" aria-labelledby="transfer-title">
-<div class="section-heading transfer-heading"><div><div class="eyebrow small">03 / LEARNING FROM EXPERIENCE — AND TRANSFERRING IT</div><h2 id="transfer-title">Better predictions.<br><em>Beyond the environment that taught them.</em></h2></div></div>
-<div class="prediction-comparison">
-<article class="prediction-panel"><div class="setting-label"><span>01</span> IN-ENVIRONMENT</div><h3>Learn from the same environment.</h3><p>Use past experiments to predict unseen interventions in that environment.</p><div class="prediction-bars" role="img" aria-label="In-environment mean Spearman correlation: 0.506 without records; 0.774 with in-environment records."><div class="prediction-row"><span>Without records</span><div><i style="width:50.6%"></i></div><b>0.506</b></div><div class="prediction-row knowledge"><span>With in-env records</span><div><i style="width:77.4%"></i></div><b>0.774</b></div></div><div class="prediction-caption">Mean Spearman ρ ↑ · 5 evaluated environments</div></article>
-<article class="prediction-panel cross"><div class="setting-label"><span>02</span> CROSS-ENVIRONMENT</div><h3>Learn elsewhere. Predict here.</h3><p>Use experiments from other environments, with no records from the target.</p><div class="prediction-bars" role="img" aria-label="Cross-environment mean Spearman correlation: 0.628 without records; 0.729 with records from other environments."><div class="prediction-row"><span>Without records</span><div><i style="width:62.8%"></i></div><b>0.628</b></div><div class="prediction-row knowledge"><span>With cross-env records</span><div><i style="width:72.9%"></i></div><b>0.729</b></div></div><div class="prediction-caption">Mean Spearman ρ ↑ · 5 pretraining targets · 0 target records</div></article>
-</div>
-<p class="comparison-note">Means over each setting’s evaluated environments. The in-env and cross-env target sets differ. <a href="https://arxiv.org/pdf/2610.12235#page=6" target="_blank" rel="noopener">Tables 2–3 ↗</a></p>
-<figure class="transfer-case" id="qwen-transfer">
-<div class="transfer-case-heading"><div><span class="case-tag">CROSS-ENV IN PRACTICE</span><h3>No Qwen3 records.<br><em>Better Qwen3 decisions.</em></h3></div><div class="case-summary">Experience from four source environments.<br>A target with no experimental history.</div></div>
-<div class="transfer-network">
-<div class="transfer-sources"><div class="network-label">SOURCE ENVIRONMENTS</div><div class="source-environment olmo"><span class="source-mark">O</span><div><strong>OLMo3</strong><span>100M + 190M · 2 environments</span></div><span class="source-record-icon">▤</span></div><div class="source-environment marin"><span class="source-mark">M</span><div><strong>Marin</strong><span>153M · pretraining</span></div><span class="source-record-icon">▤</span></div><div class="source-environment nanochat"><span class="source-mark">N</span><div><strong>Nanochat</strong><span>149M · pretraining</span></div><span class="source-record-icon">▤</span></div></div>
-<div class="network-connector collect" aria-hidden="true"><svg viewBox="0 0 80 240" preserveAspectRatio="none"><path d="M0 53H12C40 53 40 127 66 127H80M0 130H80M0 207H12C40 207 40 133 66 133H80"/><path class="connector-flow" d="M0 130H80"/></svg></div>
-<div class="transfer-model"><div class="network-label">REUSABLE RESEARCH KNOWLEDGE</div><div class="model-memory"><span class="memory-number">244</span><span>source experiment records</span><div class="memory-pages" aria-hidden="true"><i></i><i></i><i></i></div></div><span class="memory-to-model" aria-hidden="true">↓</span><div class="transfer-model-core"><span class="transfer-w">W</span><strong>Research<br>World Model</strong></div><small>Fixed LLM · in-context experience</small></div>
-<div class="network-connector predict" aria-hidden="true"><svg viewBox="0 0 80 240" preserveAspectRatio="none"><path d="M0 212H74M66 206L74 212L66 218"/><path class="connector-flow" d="M0 212H66"/></svg><span>Predict</span></div>
-<div class="transfer-target"><div class="network-label">HELD-OUT TARGET ENVIRONMENT</div><div class="target-card"><div class="qwen-symbol" aria-hidden="true"><svg viewBox="0 0 42 42"><path d="M21 5 36 13v16L21 37 6 29V13Z M6 13 21 21 36 13M21 21V37M21 5v16"/></svg></div><h4>Qwen3<span>153M · pretraining</span></h4><div class="target-records"><b>0</b><span>Qwen3<br>experiment records</span></div><div class="target-inputs"><span>✓</span> Target setup + candidate intervention</div></div></div>
-</div>
-<div class="transfer-outcomes"><div class="transfer-result featured"><span class="result-label">BETTER EXPERIMENT SELECTION</span><div class="transfer-result-value">78<span>%</span><span class="result-direction">↓</span></div><strong>lower selection regret</strong><p>Regret@3: 9.40 × 10⁻⁴ → 2.10 × 10⁻⁴ BPB</p></div><div class="transfer-result"><span class="result-label">BETTER PREDICTION</span><div class="transfer-result-pair">0.74 <span>→</span> <b>0.82</b></div><strong>Spearman correlation ↑</strong><p>Ranking the gains of unseen interventions</p></div><div class="transfer-result"><span class="result-label">BETTER TOP-3 CHOICES</span><div class="transfer-result-pair">0.77 <span>→</span> <b>0.91</b></div><strong>NDCG@3 ↑</strong><p>Selecting 3 experiments from 16 candidates</p></div></div>
-<figcaption>Qwen3 transfer: 244 source records, 71 held-out target interventions, zero target-environment records. Held-out interventions and their near-duplicate groups are excluded from source histories. Same RWM backbone and inference settings in both conditions. <a href="https://arxiv.org/pdf/2610.12235#page=7" target="_blank" rel="noopener">Tables 3 &amp; 5 ↗</a></figcaption>
-</figure>
-<div class="transfer-scope"><span class="scope-mark">↗</span><p>Cross-env records improve prediction Spearman in all five evaluated pretraining environments. Selection improves in four of five; Marin is the exception.</p><a class="transfer-download" href="assets/cross-environment-transfer.png?v=7e4dd8b09884" download>Download figure ↓</a></div>
-</section>
-
-<section class="decisions-section wrap" id="findings" aria-labelledby="decisions-title">
-  <div class="decisions-heading">
-    <div><div class="eyebrow small">04 / FROM PREDICTIONS TO DECISIONS</div><h2 id="decisions-title">Choose better experiments.<br><em>Make the budget go further.</em></h2></div>
-    <p>A prediction matters when it changes what gets run.<br> We test that value in one selection step, then across repeated research rounds.</p>
+  <div class="results">
+    <a class="card" href="#leaderboard">
+      <span class="k">Experience</span>
+      <span class="n">13<small> / 13</small></span>
+      <p>models with 320 past experiment records beat the best model without them.</p>
+      <span class="src">OLMo3-100M · 160 held-out queries · Spearman ρ</span>
+    </a>
+    <a class="card" href="#transfer">
+      <span class="k">Transfer</span>
+      <span class="n">78%<small> ↓</small></span>
+      <p>lower selection regret on Qwen3-153M, using zero Qwen3 records — only experience from other setups.</p>
+      <span class="src">Regret@3 · 244 source records</span>
+    </a>
+    <a class="card" href="#transfer">
+      <span class="k">Decisions</span>
+      <span class="n">+15.8%</span>
+      <p>higher final best gain over 24 experiments when the search starts from past records.</p>
+      <span class="src">Multi-round autoresearch · OLMo3-100M</span>
+    </a>
   </div>
-  <div class="decision-panels">
-    <article class="decision-panel selection-panel" aria-labelledby="selection-title">
-      <div class="decision-panel-kicker"><span>01 / EXPERIMENT SELECTION</span><span class="decision-scope">Across environments</span></div>
-      <h3 id="selection-title">Run 3. Choose from 16.</h3>
-      <p class="decision-intro">Use predicted gains to select promising interventions under a fixed execution budget.</p>
-      <figure class="selection-illustration">
-        <div class="candidate-pool" aria-label="Schematic pool of sixteen candidate experiments, with three selected for execution">
-          <span class="candidate-tile chosen"><b>01</b><i>✓</i></span><span class="candidate-tile"><b>02</b><i></i></span><span class="candidate-tile"><b>03</b><i></i></span><span class="candidate-tile"><b>04</b><i></i></span>
-          <span class="candidate-tile"><b>05</b><i></i></span><span class="candidate-tile chosen"><b>06</b><i>✓</i></span><span class="candidate-tile"><b>07</b><i></i></span><span class="candidate-tile"><b>08</b><i></i></span>
-          <span class="candidate-tile"><b>09</b><i></i></span><span class="candidate-tile"><b>10</b><i></i></span><span class="candidate-tile"><b>11</b><i></i></span><span class="candidate-tile chosen"><b>12</b><i>✓</i></span>
-          <span class="candidate-tile"><b>13</b><i></i></span><span class="candidate-tile"><b>14</b><i></i></span><span class="candidate-tile"><b>15</b><i></i></span><span class="candidate-tile"><b>16</b><i></i></span>
-        </div>
-        <div class="selection-budget"><span class="selection-arrow">→</span><strong>3<span>/16</span></strong><span>experiments<br>get executed</span></div>
-        <figcaption>Illustrative candidate pool · 200 shared random partitions in the evaluation</figcaption>
-      </figure>
-      <div class="selection-outcomes">
-        <div><span class="outcome-mode">IN-ENV KNOWLEDGE</span><strong>58.2<span>% ↓</span></strong><p>Mean relative reduction<br>in Regret@3</p></div>
-        <div><span class="outcome-mode cross">CROSS-ENV KNOWLEDGE</span><strong class="cross">52.2<span>% ↓</span></strong><p>Reduction in macro-average<br>Regret@3</p></div>
-      </div>
-      <p class="decision-note">Each summary covers five evaluated environments, relative to no records. Lower regret means less gain lost by missing the best candidate; cross-env selection does not improve on every target.</p>
-      <a class="decision-source" href="https://arxiv.org/pdf/2610.12235#page=7" target="_blank" rel="noopener">Experiment selection · Tables 4–5 <span>↗</span></a>
-    </article>
-    <article class="decision-panel rounds-panel" aria-labelledby="rounds-title">
-      <div class="decision-panel-kicker"><span>02 / MULTI-ROUND AUTORESEARCH</span><span class="decision-scope">OLMo3-100M</span></div>
-      <h3 id="rounds-title">Learn from the next result, too.</h3>
-      <p class="decision-intro">Selected experiments return measured outcomes. Those new records inform the next round.</p>
-      <div class="rounds-budget" aria-label="Eight rounds, three selections each, twenty-four selections total">
-        <div class="rounds-strip" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
-        <div class="rounds-equation">8 rounds <span>×</span> 3 selections <span>=</span> <strong>24</strong><small>same total budget</small></div>
-      </div>
-      <figure class="gain-comparison" aria-labelledby="gain-chart-label">
-        <figcaption id="gain-chart-label">FINAL BEST GAIN <span>↑ Higher is better</span></figcaption>
-        <div class="gain-row"><span>No initial records</span><div class="gain-track"><i style="width:83.3333%"></i></div><b>100</b></div>
-        <div class="gain-row"><span>In-env records</span><div class="gain-track"><i class="gain-in" style="width:96.5%"></i></div><b>115.8</b></div>
-        <div class="gain-row"><span>Cross-env records</span><div class="gain-track"><i class="gain-cross" style="width:93%"></i></div><b>111.6</b></div>
-        <p>Normalized to no initial records = 100. Means over five evaluations.</p>
-      </figure>
-      <div class="rounds-takeaway"><span>↗</span><p><strong>+15.8% with in-env knowledge.<br>+11.6% with cross-env knowledge.</strong><br>More final best gain, with the same 24 selections.</p></div>
-      <p class="decision-note">Cross-env initialization uses records from other environments only. New outcomes from the target environment are added as the research proceeds.</p>
-      <a class="decision-source" href="https://arxiv.org/pdf/2610.12235#page=8" target="_blank" rel="noopener">Multi-round Autoresearch · Figure 2 <span>↗</span></a>
-    </article>
+  <p class="scale">Built on <b>2,653</b> real experiment records · <b>9</b> research environments · <b>171,862</b> H100 GPU-hours. Model weights stay fixed; experience is supplied in context.</p>
+</section>
+
+<!-- 2. METHOD -->
+<section class="block" id="method"><div class="wrap">
+  <div class="num">01 · Method</div>
+  <h2>Predict the result <em>before</em> spending the compute.</h2>
+  <p class="intro">A Research World Model (RWM) reads a research environment, a concrete code or recipe change, and records of past experiments, then predicts how much that change will help. The top predictions get run for real, and their outcomes become new records.</p>
+  <div class="loop" role="list">
+    <div class="step" role="listitem"><b>Past records</b><span>environment · intervention · measured gain — from this setup or another</span></div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="step model" role="listitem"><b>Research World Model</b><span>a fixed LLM; records go into its context</span></div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="step" role="listitem"><b>Rank candidates</b><span>predicted gain for each proposed change</span></div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="step" role="listitem"><b>Run the top picks</b><span>real training runs, fixed budget</span></div>
   </div>
-</section>
+  <div class="back">↺ Measured outcomes become new records for the next round</div>
+</div></section>
 
-<section class="ablation-heading wrap" id="ablations"><div class="eyebrow small">WHY RESEARCH KNOWLEDGE MATTERS</div><h2>Records help across model backbones.</h2><p>We evaluate RWM backbones and reasoning effort on OLMo3-100M. Adding relevant experimental records improves every tested backbone. Even LOW effort with records outperforms the best effort setting without them: <strong>0.892 vs. 0.654 Spearman ρ.</strong></p><div class="ablation-takeaway"><b>13 / 13</b><span>backbones with records exceed the strongest backbone without records.</span></div></section>
-<section class="benchmark wrap" id="leaderboard" aria-labelledby="chart-title">
-<div class="benchmark-top"><div><div class="eyebrow small">05 / MODEL &amp; REASONING ABLATIONS</div><h2 id="chart-title">Experience changes the leaderboard.</h2><p>Research prediction performance across 13 language models</p></div><div class="condition-control" role="group" aria-label="Experiment condition"><button id="before-btn" class="active" aria-pressed="true">Without records</button><button id="after-btn" aria-pressed="false"><span>+</span> Experiment records</button></div></div>
-<div class="chart-context"><span class="condition-badge" id="condition-label"><i></i> NO EXPERIMENT RECORDS</span><span class="metric-label">Spearman ρ <span>↑ Higher is better</span></span></div>
-<div class="chart-container" role="img" aria-label="Animated ranking of 13 models by Spearman correlation. Exact before and after values are available in the data table below.">
-<div class="chart-colhead"><span>#</span><span>MODEL</span><span>INTERVENTION PREDICTION</span><span>ρ</span><span>CHANGE</span></div>
-<div id="chart" class="chart"><div class="plot-grid" aria-hidden="true"><div class="gridline" style="left:0%"></div><div class="gridline zero" style="left:28.5714%"></div><div class="gridline" style="left:57.1429%"></div><div class="gridline" style="left:85.7143%"></div><div class="gridline" style="left:100%"></div><div class="reference-line"><span>Best without records <b>0.621</b></span></div></div><div id="chart-rows"></div></div>
-<div class="chart-axis"><div class="axis-plot"><span style="left:0%">−0.4</span><span style="left:28.5714%">0</span><span style="left:57.1429%">0.4</span><span style="left:85.7143%">0.8</span><span style="left:100%">1.0</span></div></div>
-</div>
-<div class="chart-insight" id="chart-insight"><span class="insight-symbol">↗</span><p id="insight-text">Before experience, prediction quality varies widely — from <strong>−0.362 to 0.621.</strong></p><span id="chart-count">0 / 13 above baseline</span></div>
-<div class="playback"><button id="play-btn" class="play-button" aria-label="Play leaderboard animation">▶</button><button id="reset-btn" class="reset-button" aria-label="Reset animation">↺</button><label class="sr-only" for="timeline">Animation progress</label><input id="timeline" type="range" min="0" max="14000" step="10" value="0" aria-label="Animation progress"><span id="time-label">0:00 / 0:14</span><button id="replay-btn" class="replay-button">Replay <span>↻</span></button></div>
-<div class="chart-footnote"><p>OLMo3-100M · 160 queries · 320 records · HIGH effort where supported · Figure 3</p><p>Two measured conditions; motion is interpolation. <a href="#data-table">View exact results ↓</a></p></div>
-</section>
-<section class="data-section wrap" id="data-table"><details><summary><span><span class="eyebrow small">MODEL RESULTS</span><strong>All 13 models. Both conditions.</strong></span><span class="expand">+</span></summary><div class="table-scroll"><table><caption>Spearman ρ on OLMo3-100M. Ordered by performance with records. Ranks use unrounded values.</caption><thead><tr><th scope="col">Model</th><th scope="col">Without records</th><th scope="col">With records</th><th scope="col">Δ Spearman</th><th scope="col">Rank</th></tr></thead><tbody id="results-body"></tbody></table></div><div class="data-download"><p>Ranks #6 and #7 both round to 0.862. More precision is shown here to preserve the distinction.</p><a href="assets/benchmark-data.json?v=40014d4fdede" download>Download data JSON ↓</a></div></details></section>
+<!-- 3. LEADERBOARD -->
+<section class="block" id="leaderboard"><div class="wrap">
+  <div class="num">02 · Experience vs. model choice</div>
+  <div class="lb-head">
+    <h2>Experience changes <em>the leaderboard.</em></h2>
+    <div class="toggle" role="group" aria-label="Condition">
+      <button type="button" id="b-before" aria-pressed="true">No records</button>
+      <button type="button" id="b-after" aria-pressed="false">320 records</button>
+    </div>
+  </div>
+  <div class="board" id="board">
+    <div class="status"><span id="cond">Without experiment records</span><span><strong id="count">0 / 13</strong> above <span style="color:var(--amber);font-weight:600">┆ best without records, 0.621</span></span></div>
+    <div class="rows" id="rows" aria-live="polite"></div>
+    <div class="axis" aria-hidden="true"><span></span><span>Spearman ρ →</span><span class="ticks" id="ticks"></span><span></span></div>
+  </div>
+  <div class="below">
+    <div class="note"><b>More reasoning doesn't replace experience.</b> The same backbone at LOW reasoning effort with records scores 0.892; its best effort setting without records scores 0.654.</div>
+    <div class="note" style="background:#fff;border:1px solid var(--line)"><b>Same weights.</b> Nothing is trained here: the only change between the two conditions is 320 experiment records in the prompt.</div>
+  </div>
+  <details style="margin-top:16px">
+    <summary>Exact values for all 13 models</summary>
+    <div class="tblwrap"><table><thead><tr><th>Model</th><th class="r">No records</th><th class="r">320 records</th><th class="r">Δ</th><th class="r">Rank</th></tr></thead><tbody id="tbody"></tbody></table></div>
+    <p class="fine" style="margin-top:0">OLMo3-100M, 160 held-out queries, HIGH effort where supported (Figure 3). Ranks use unrounded values. <a href="assets/benchmark-data.json">Download JSON</a></p>
+  </details>
+</div></section>
 
+<!-- 4. TRANSFER & DECISIONS -->
+<section class="block" id="transfer"><div class="wrap">
+  <div class="num">03 · Transfer and decisions</div>
+  <h2>Experience transfers — <em>and changes what gets run.</em></h2>
+  <p class="intro">The harder test: predict in a setup the model has never seen records from. Qwen3-153M got zero target records; the RWM used 244 records from OLMo3, Marin and Nanochat. Held-out interventions and their near-duplicates were removed from the source data.</p>
+  <div class="fig"><img src="assets/cross-environment-transfer.png" alt="No Qwen3 records, better Qwen3 decisions: with 244 source records, Regret@3 falls 78%, Spearman rises 0.74 to 0.82, NDCG@3 rises 0.77 to 0.91." width="2384" height="1568"></div>
+  <div class="stats">
+    <div class="stat"><span class="k">Prediction</span><div class="v"><s>0.628</s> → 0.729</div><p>Mean Spearman over 5 pretraining targets using only other environments’ records. With same-environment records: 0.506 → 0.774.</p></div>
+    <div class="stat"><span class="k">Selection</span><div class="v">52–58% ↓</div><p>Reduction in Regret@3 when choosing 3 of 16 candidates: 58.2% with in-environment records, 52.2% cross-environment.</p></div>
+    <div class="stat"><span class="k">Multi-round</span><div class="v">+15.8% · +11.6%</div><p>Final best gain after 8 rounds × 3 picks, starting from in-environment or cross-environment records (no records = 100).</p></div>
+  </div>
+  <p class="caveat"><b>Where it breaks:</b> cross-environment records improved prediction on all five pretraining targets, but experiment selection on only four. On Marin, ranking got better while the picks did not.</p>
+  <p class="fine">Lower regret means less gain lost by missing the best candidate — not less compute. Tables 2–5 and Figure 2 in the <a href="https://arxiv.org/pdf/2610.12235#page=6">paper</a>.</p>
+</div></section>
 
-<section class="paper-conclusion wrap"><p>Every experiment does more than test an idea.<br>It produces knowledge that can help choose the next one —<br>even in another research environment.</p><small>Evidence for reusable research knowledge, and a motivation to collect experimental data for future RWM training.</small></section>
+<!-- 5. ENVIRONMENTS & PAPER -->
+<section class="block" id="paper"><div class="wrap">
+  <div class="num">04 · Data and paper</div>
+  <h2>Nine research environments, <em>real experiments.</em></h2>
+  <details>
+    <summary>See all 9 environments (2,653 records)</summary>
+    <div class="tblwrap"><table class="envs">
+      <thead><tr><th>Environment</th><th>Stage · outcome</th><th>Records</th></tr></thead>
+      <tbody>
+        <tr><td>OLMo3 100M <span class="tag">in-env</span><span class="tag c">cross-env</span></td><td>Pretraining · bits per byte ↓</td><td>480</td></tr>
+        <tr><td>OLMo3 190M <span class="tag c">cross-env</span></td><td>Pretraining · bits per byte ↓</td><td>132</td></tr>
+        <tr><td>Marin 153M <span class="tag c">cross-env</span></td><td>Pretraining · bits per byte ↓</td><td>132</td></tr>
+        <tr><td>Nanochat 149M <span class="tag c">cross-env</span></td><td>Pretraining · bits per byte ↓</td><td>132</td></tr>
+        <tr><td>Qwen3 153M <span class="tag c">cross-env</span></td><td>Pretraining · bits per byte ↓</td><td>132</td></tr>
+        <tr><td>E2D2 170M (diffusion LM) <span class="tag">in-env</span></td><td>Pretraining · bits per byte ↓</td><td>661</td></tr>
+        <tr><td>Math distillation, Qwen3-1.7B <span class="tag">in-env</span></td><td>Post-training · AIME24/25 avg@32 ↑</td><td>280</td></tr>
+        <tr><td>Code RL, OLMo-3-7B <span class="tag">in-env</span></td><td>Post-training · LiveCodeBench ↑</td><td>149</td></tr>
+        <tr><td>Inference optimization, Gemma-4-E4B-it / vLLM <span class="tag">in-env</span></td><td>Inference · quality-constrained tokens/s ↑</td><td>555</td></tr>
+      </tbody>
+    </table></div>
+    <p class="fine" style="margin-top:0">in-env: evaluated with records from the same environment. cross-env: target for transfer among the five autoregressive pretraining environments.</p>
+  </details>
 
-<section class="paper-section wrap" id="paper"><div><div class="eyebrow small">READ THE RESEARCH</div><h2>Language Models as<br>AI Research World Models</h2><p class="authors"><a href="https://asillycat.github.io/" target="_blank" rel="noopener">Zijun Wang<sup aria-label="equal contribution">*</sup></a>, <a href="https://nuuuh.github.io/" target="_blank" rel="noopener">Zewen Liu<sup aria-label="equal contribution">*</sup></a>, <a href="https://ventr1c.github.io/" target="_blank" rel="noopener">Minhua Lin</a>, <a href="https://zhaotianweng.github.io/" target="_blank" rel="noopener">Zhaotian Weng</a>, <a href="https://scholar.google.com/citations?user=yROrWMkAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener">Zhan Shi</a>, <a href="https://binghe2727.github.io/" target="_blank" rel="noopener">Bing He</a>, <a href="https://yisisang.github.io/" target="_blank" rel="noopener">Yisi Sang</a>, <a href="https://www.dakuowang.com/" target="_blank" rel="noopener">Dakuo Wang</a>, <a href="https://www.amazon.science/author/benoit-dumoulin" target="_blank" rel="noopener">Benoit Dumoulin</a>, <a href="https://www.cs.emory.edu/~wjin30/" target="_blank" rel="noopener">Wei Jin</a>, <a href="https://yuyinzhou.github.io/" target="_blank" rel="noopener">Yuyin Zhou</a>, <a href="https://cihangxie.github.io/" target="_blank" rel="noopener">Cihang Xie</a>, <a href="https://hanqinglu.github.io/" target="_blank" rel="noopener">Hanqing Lu</a></p><p class="affiliations">Amazon · UC Santa Cruz · Emory University<br>Pennsylvania State University · UC Santa Barbara</p></div><div class="paper-actions"><a href="https://arxiv.org/abs/2610.12235" class="button primary" target="_blank" rel="noopener">Read on arXiv <span>↗</span></a><button class="button secondary" id="cite-btn">Copy citation <span>⧉</span></button><span id="copy-status" role="status" aria-live="polite"></span><a href="assets/citation.bib?v=15d9e55a57eb" download class="text-link">Download BibTeX ↓</a></div></section>
+  <p class="close">Every experiment does more than test an idea. It produces knowledge that can help choose the next one — even in another research environment.</p>
+
+  <div class="paper">
+    <div class="num" style="margin-bottom:6px">Paper</div>
+    <h3>Language Models as AI Research World Models</h3>
+    <p class="fine" style="margin:0 0 14px">Wang*, Liu*, Lin, Weng, Shi, He, Sang, Wang, Dumoulin, Jin, Zhou, Xie, Lu · arXiv 2610.12235, 2026</p>
+    <div class="actions" style="margin:0"><a class="cta dark" href="https://arxiv.org/abs/2610.12235" target="_blank" rel="noopener">arXiv ↗</a><a class="cta light" href="https://arxiv.org/pdf/2610.12235" target="_blank" rel="noopener">PDF ↗</a></div>
+    <pre id="bib">@misc{wang2026languagemodelsairesearch,
+  title={Language Models as AI Research World Models},
+  author={Zijun Wang and Zewen Liu and Minhua Lin and Zhaotian Weng and Zhan Shi and Bing He and Yisi Sang and Dakuo Wang and Benoit Dumoulin and Wei Jin and Yuyin Zhou and Cihang Xie and Hanqing Lu},
+  year={2026},
+  eprint={2610.12235},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL},
+  url={https://arxiv.org/abs/2610.12235}
+}</pre>
+    <button class="copy" id="copy" type="button">Copy BibTeX</button> <span class="fine" id="copied" aria-live="polite"></span>
+  </div>
+</div></section>
 </main>
-<footer class="wrap"><a class="footer-brand" href="#">RWM<span> / Research World Models</span></a><p>October 2026</p><a href="https://arxiv.org/abs/2610.12235" target="_blank" rel="noopener">arXiv:2610.12235 ↗</a></footer>
-</body></html>
+<footer class="wrap"><a href="../">← A-EVO Lab</a></footer>
+
+<script>
+(() => {
+'use strict';
+const M = [
+ ["Claude Opus 5 (high)","anthropic.svg",0.6210604709915126,0.8956726734441848],
+ ["Grok 4.6 (high)","xai.svg",0.5817587217671679,0.8906746770585875],
+ ["GPT-6 Astra (high)","openai.svg",0.5750502479341251,0.8805690502154662],
+ ["GPT-5.6 Sol (high)","openai.svg",0.45931067976335743,0.8771229489361815],
+ ["GPT-5.6 Terra (high)","openai.svg",0.3786913833449128,0.8616368669762594],
+ ["GPT-5.6 Luna (high)","openai.svg",0.3488996168821823,0.8733657264304917],
+ ["MiniMax-M2.5","minimax.svg",0.16844029210192132,0.7808273762995732],
+ ["Kimi K2.5","kimi.jpg",0.0893298488149468,0.8596151081556477],
+ ["GLM-5","zai.svg",0.05191218689557857,0.8020923994083032],
+ ["Qwen3 235B 2507","alibaba.svg",-0.030246655888524755,0.766647178883721],
+ ["DeepSeek V3.2","deepseek.svg",-0.05420376313519638,0.8619109126822841],
+ ["Nemotron 3 Super","nvidia.svg",-0.23293819782826322,0.8003240774388909],
+ ["Mistral Large 3","mistral.svg",-0.3620032386340157,0.6383063753018331]
+].map(([name,logo,before,after],i)=>({name,logo:'assets/model-logos/'+logo,before,after,i}));
+const $ = id => document.getElementById(id);
+const LO=-0.4, HI=1.0, pct=v=>(v-LO)/(HI-LO)*100;
+const best=Math.max(...M.map(m=>m.before));
+const fmt=v=>(v<0?'−':'')+Math.abs(v).toFixed(3);
+const rowsEl=$('rows');
+// static lines
+const lineHtml=`<span class="zero" style="left:${pct(0)}%"></span><span class="base" style="left:${pct(best)}%"></span>`;
+const nodes=M.map(m=>{
+  const r=document.createElement('div'); r.className='row';
+  r.innerHTML=`<span class="rk"></span><span class="nm"><img src="${m.logo}" alt="" loading="lazy">${m.name}</span><span class="lane">${lineHtml}<span class="bar"></span></span><span class="sc"></span>`;
+  r.title=`${m.name}\nNo records: ${m.before.toFixed(5)}\n320 records: ${m.after.toFixed(5)}`;
+  rowsEl.append(r);
+  return {m,r,rk:r.querySelector('.rk'),bar:r.querySelector('.bar'),sc:r.querySelector('.sc')};
+});
+$('ticks').innerHTML=[-0.4,0,0.4,0.8].map(t=>`<span style="left:${pct(t)}%">${t===0?'0':fmt(t).replace('.000','').replace(/0+$/,'')}</span>`).join('');
+function show(after){
+  const key=after?'after':'before';
+  const order=[...M].sort((a,b)=>b[key]-a[key]);
+  const rh=rowsEl.offsetHeight/13;
+  nodes.forEach(n=>{
+    const v=n.m[key], rank=order.indexOf(n.m);
+    n.r.style.transform=`translateY(${rank*rh}px)`;
+    n.rk.textContent=String(rank+1).padStart(2,'0');
+    const z=pct(0), x=pct(v);
+    n.bar.style.left=Math.min(z,x)+'%'; n.bar.style.width=Math.abs(x-z)+'%';
+    n.sc.textContent=fmt(v);
+  });
+  $('board').classList.toggle('after',after);
+  $('b-before').setAttribute('aria-pressed',String(!after));
+  $('b-after').setAttribute('aria-pressed',String(after));
+  $('cond').textContent=after?'With 320 experiment records in context':'Without experiment records';
+  $('count').textContent=`${M.filter(m=>m[key]>best+1e-9).length} / 13`;
+  state=after;
+}
+let state=false, auto=true;
+$('b-before').onclick=()=>{auto=false;show(false)};
+$('b-after').onclick=()=>{auto=false;show(true)};
+show(false);
+addEventListener('resize',()=>show(state));
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(([e])=>{ if(e.isIntersecting&&auto){auto=false;setTimeout(()=>show(true),700);io.disconnect();} },{threshold:.45});
+  io.observe($('board'));
+}
+// table
+[...M].sort((a,b)=>b.after-a.after).forEach((m,i)=>{
+  const r0=[...M].sort((a,b)=>b.before-a.before).indexOf(m)+1;
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td>${m.name}</td><td class="r">${fmt(m.before)}</td><td class="r">${fmt(m.after)}</td><td class="r">+${(m.after-m.before).toFixed(3)}</td><td class="r">${r0} → ${i+1}</td>`;
+  $('tbody').append(tr);
+});
+// lead film: vertical cut on phones
+(()=>{const v=$('lead');if(matchMedia('(max-width:720px)').matches){v.poster='assets/rwm-leaderboard-4x5-poster.jpg';v.querySelector('source').src='assets/rwm-leaderboard-4x5.mp4';v.load();}
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause();} else v.play().catch(()=>{});})();
+$('copy').onclick=async()=>{
+  try{await navigator.clipboard.writeText($('bib').textContent);$('copied').textContent='Copied.';}
+  catch{const s=getSelection(),r=document.createRange();r.selectNodeContents($('bib'));s.removeAllRanges();s.addRange(r);$('copied').textContent='Selected — press ⌘C.';}
+};
+})();
+</script>
+</body>
+</html>
