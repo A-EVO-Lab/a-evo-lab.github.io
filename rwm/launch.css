@@ -1,0 +1,23 @@
+/* Launch introduction and mobile film. The full study remains below. */
+.story-hero .hero-grid{grid-template-columns:minmax(0,1fr) 285px;gap:64px;align-items:center}
+.story-hero h1{font-size:clamp(48px,5.3vw,72px);line-height:1.05;letter-spacing:-3px;margin:24px 0}
+.story-hero .hero-description{max-width:580px;font-size:16px;line-height:1.75}
+.story-hero .hero-note{margin:0;padding-left:28px;display:block}
+.story-hero .note-stat{font-size:92px;line-height:1.1;margin:18px 0 12px}
+.story-hero .note-stat span{font-size:34px;letter-spacing:-1px}
+.story-hero .hero-note p{font-size:17px;line-height:1.55}
+.story-hero .hero-note small{display:block;font-size:12px;line-height:1.8}
+.hero-scope{font-size:12px;line-height:1.6;color:#526c60;margin:18px 0 0}
+.hero-transfer{display:flex;align-items:center;gap:20px;border:1px solid #d7e4d9;border-radius:6px;background:#edf3ec;padding:18px 20px;margin-top:30px;color:#264d37}
+.hero-transfer>span:first-child{font-size:10px;letter-spacing:1px;font-weight:600}
+.hero-transfer strong{font-size:14px;font-weight:500;line-height:1.5}
+.hero-transfer>span:last-child{margin-left:auto}
+.lead-film-frame{max-width:540px;margin-inline:auto}
+.lead-film-frame video{aspect-ratio:4/5}
+.lead-film-heading,.lead-film-footer{max-width:760px;margin-inline:auto}
+.lead-film-footer{align-items:start;flex-wrap:wrap}
+.lead-film-footer p{font-size:12px}
+.hero-actions button{cursor:pointer}
+@media(max-width:900px){.story-hero .hero-grid{gap:28px;grid-template-columns:minmax(0,1fr) 240px}.story-hero h1{font-size:54px;letter-spacing:-2px}.hero-transfer{gap:14px}}
+@media(max-width:760px){.story-hero .hero-grid{grid-template-columns:1fr;gap:26px}.story-hero h1{font-size:clamp(38px,9.6vw,60px);letter-spacing:-1.8px;margin:20px 0}.story-hero .hero-description{font-size:15px;line-height:1.65}.story-hero .hero-note{border:1px solid #d7e4d9;border-radius:7px;padding:20px;background:#f0f5ee}.story-hero .note-stat{font-size:64px;margin:10px 0}.story-hero .note-stat span{font-size:28px}.story-hero .hero-note p{font-size:16px;margin:8px 0}.story-hero .note-rule{margin:14px 0}.hero-transfer{flex-wrap:wrap;padding:16px;margin-top:20px;gap:8px}.hero-transfer>span:first-child{width:100%}.hero-transfer strong{flex:1}.hero-actions{gap:18px}.hero-scope{font-size:12px}.lead-film-frame{max-width:440px}.lead-film-footer>div{white-space:normal}}
+@media(prefers-reduced-motion:reduce){.hero-transfer{transition:none}}

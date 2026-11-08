@@ -120,7 +120,7 @@ $('replay-btn').addEventListener('click',()=>{chartAutoplay=true;play(true);});
 $('before-btn').addEventListener('click',()=>{holdChart();render(0);});
 $('after-btn').addEventListener('click',()=>{holdChart();render(duration);});
 $('timeline').addEventListener('input',e=>{holdChart();render(Number(e.target.value));});
-document.querySelector('a[href="#data-table"]').addEventListener('click',()=>document.querySelector('#data-table details').open=true);
+document.querySelectorAll('a[href="#data-table"]').forEach(link=>link.addEventListener('click',()=>document.querySelector('#data-table details').open=true));
 window.addEventListener('resize',()=>render(currentTime));
 document.addEventListener('visibilitychange',syncChartPlayback);
 reduced.addEventListener('change',syncChartPlayback);
